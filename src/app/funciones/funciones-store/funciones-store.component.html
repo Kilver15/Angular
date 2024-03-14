@@ -1,0 +1,69 @@
+<div class="container login-container" [@fadeInOut]>
+    <div class="row justify-content-center">
+       <div class="col-md-6 mt-3">
+         <div class="card">
+           <div class="card-header">Registrar nueva Sala</div>
+           <div class="card-body">
+             <form [formGroup]="funcionesStoreForm" (ngSubmit)="onSubmit()">
+               <div class="mb-3">
+                    <label for="name">Sala</label>
+                    <select class="form-select" formControlName="sala_id">
+                        <option selected>Selecciona una sala</option>
+                        <option *ngFor="let sala of salas" [value]="sala.id">{{ sala.numero_sala }}</option>
+                       </select>
+                       
+                    <div *ngIf="funcionesStoreForm.get('sala_id')?.errors" class="invalid-feedback">
+                       <div *ngIf="funcionesStoreForm.get('sala_id')?.errors?.['required']">
+                         Por favor selecciona una sala.
+                       </div>
+                    </div>
+                   </div>
+                   <div class="mb-3">
+                    <label for="name">Pelicula</label>
+                    <select class="form-select" formControlName="pelicula_id">
+                        <option selected>Selecciona una pelicula</option>
+                        <option *ngFor="let pelicula of peliculas" [value]="pelicula.id">{{ pelicula.titulo }}</option>
+                       </select>
+                       
+                    <div *ngIf="funcionesStoreForm.get('pelicula_id')?.errors" class="invalid-feedback">
+                       <div *ngIf="funcionesStoreForm.get('pelicula_id')?.errors?.['required']">
+                         Por favor selecciona una pelicula.
+                       </div>
+                    </div>
+                   </div>
+                   <div class="mb-3">
+                    <label for="fecha">Fecha</label>
+                    <input
+                       type="date"
+                       id="fecha"
+                       formControlName="fecha"
+                       class="form-control"
+                       [ngClass]="{ 'is-invalid': funcionesStoreForm.get('fecha')?.touched && funcionesStoreForm.get('fecha')?.invalid }"
+                       
+                    />
+                    <div *ngIf="funcionesStoreForm.get('fecha')?.errors" class="invalid-feedback">
+                       <div *ngIf="funcionesStoreForm.get('fecha')?.errors?.['required']">La fecha es requerida.</div>
+                    </div>
+                   </div>
+                   <div class="mb-3">
+                    <label for="hora_inicio">Hora de inicio</label>
+                    <input
+                       type="text"
+                       id="hora_inicio"
+                       formControlName="hora_inicio"
+                       class="form-control"
+                       [ngClass]="{ 'is-invalid': funcionesStoreForm.get('hora_inicio')?.touched && funcionesStoreForm.get('capacidad')?.invalid }"
+                       placeholder="Hora de Inicio" 
+                    />
+                    <div *ngIf="funcionesStoreForm.get('hora_inicio')?.errors" class="invalid-feedback">
+                       <div *ngIf="funcionesStoreForm.get('hora_inicio')?.errors?.['required']">La hora de inicio es requerida.</div>
+                    </div>
+                   </div>
+                 <button type="submit" class="btn btn-primary">Crear funcion</button>
+               </form>
+           </div>
+         </div>
+       </div>
+    </div>
+   </div>
+   

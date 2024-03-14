@@ -1,0 +1,70 @@
+<div class="container login-container" [@fadeInOut]>
+    <div class="row justify-content-center">
+       <div class="col-md-6 mt-3">
+         <div class="card">
+           <div class="card-header">Actualizar combo</div>
+           <div class="card-body">
+             <form [formGroup]="combosEditForm" (ngSubmit)="onSubmit()">
+               <div class="mb-3">
+                    <label for="name">Nombre</label>
+                    <input
+                       type="text"
+                       id="nombre" 
+                       formControlName="nombre"
+                       class="form-control"
+                       [ngClass]="{ 'is-invalid': combosEditForm.get('nombre')?.touched && combosEditForm.get('nombre')?.invalid }"
+                       placeholder="Nombre"
+                    />
+                    <div *ngIf="combosEditForm.get('nombre')?.errors" class="invalid-feedback">
+                       <div *ngIf="combosEditForm.get('nombre')?.errors?.['required']">
+                         El nombre es requerido.
+                       </div>
+                    </div>
+                   </div>
+                   <div class="mb-3">
+                    <label for="descripcion">Descripcion</label>
+                    <input
+                       type="text"
+                       id="descripcion"
+                       formControlName="descripcion"
+                       class="form-control"
+                       [ngClass]="{ 'is-invalid': combosEditForm.get('descripcion')?.touched && combosEditForm.get('descripcion')?.invalid }"
+                       placeholder="Descripcion"
+                    />
+                    <div *ngIf="combosEditForm.get('descripcion')?.errors" class="invalid-feedback">
+                       <div *ngIf="combosEditForm.get('descripcion')?.errors?.['required']">La descripcion es requerida.</div>
+                    </div>
+                   </div>
+                   <div class="mb-3">
+                     <label for="precio">Precio</label>
+                     <input
+                       type="number"
+                       id="precio"
+                       formControlName="precio"
+                       class="form-control"
+                       [ngClass]="{ 'is-invalid': combosEditForm.get('precio')?.touched && combosEditForm.get('precio')?.invalid }"
+                       placeholder="Precio"
+                     />
+                     <div *ngIf="combosEditForm.get('precio')?.errors" class="invalid-feedback">
+                       <div *ngIf="combosEditForm.get('precio')?.errors?.['required']">El precio es requerido.</div>
+                     </div>
+                   </div>
+                   <div class="mb-3">
+                    <label>Productos</label>
+                    <div *ngFor="let producto of productos">
+                        <input type="checkbox" (change)="toggleProducto(producto, $event)" [checked]="isProductoSeleccionado(producto)"> {{ producto.nombre }}
+                    </div>
+                    <div *ngIf="combosEditForm.get('productos')?.errors" class="invalid-feedback">
+                      <div *ngIf="combosEditForm.get('productos')?.errors?.['required']">
+                        Por favor selecciona almenos un producto.
+                      </div>
+                    </div>
+                  </div>
+                 <button type="submit" class="btn btn-primary">Actualizar combo</button>
+               </form>
+           </div>
+         </div>
+       </div>
+    </div>
+   </div>
+   

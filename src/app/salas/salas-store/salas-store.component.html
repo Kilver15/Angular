@@ -1,0 +1,57 @@
+<div class="container login-container" [@fadeInOut]>
+    <div class="row justify-content-center">
+       <div class="col-md-6 mt-3">
+         <div class="card">
+           <div class="card-header">Registrar nueva Sala</div>
+           <div class="card-body">
+             <form [formGroup]="salasStoreForm" (ngSubmit)="onSubmit()">
+               <div class="mb-3">
+                    <label for="name">Cine</label>
+                    <select class="form-select" formControlName="cine_id">
+                        <option selected>Selecciona un cine</option>
+                        <option *ngFor="let cine of cines" [value]="cine.id">{{ cine.nombre }}</option>
+                       </select>
+                       
+                    <div *ngIf="salasStoreForm.get('cine_id')?.errors" class="invalid-feedback">
+                       <div *ngIf="salasStoreForm.get('cine_id')?.errors?.['required']">
+                         Por favor selecciona un cine.
+                       </div>
+                    </div>
+                   </div>
+                   <div class="mb-3">
+                    <label for="numero_sala">Numero de Sala</label>
+                    <input
+                       type="number"
+                       id="numero_sala"
+                       formControlName="numero_sala"
+                       class="form-control"
+                       [ngClass]="{ 'is-invalid': salasStoreForm.get('numero_sala')?.touched && salasStoreForm.get('numero_sala')?.invalid }"
+                       placeholder="Num. de sala"
+                    />
+                    <div *ngIf="salasStoreForm.get('numero_sala')?.errors" class="invalid-feedback">
+                       <div *ngIf="salasStoreForm.get('numero_sala')?.errors?.['required']">El numero de la sala es requerido.</div>
+                    </div>
+                   </div>
+                   <div class="mb-3">
+                    <label for="capacidad">Capacidad</label>
+                    <input
+                       type="number"
+                       id="capacidad"
+                       formControlName="capacidad"
+                       class="form-control"
+                       [ngClass]="{ 'is-invalid': salasStoreForm.get('capacidad')?.touched && salasStoreForm.get('capacidad')?.invalid }"
+                       placeholder="Capacidad" 
+                    />
+                    <div *ngIf="salasStoreForm.get('capacidad')?.errors" class="invalid-feedback">
+                       <div *ngIf="salasStoreForm.get('capacidad')?.errors?.['required']">La capacidad es requerida.</div>
+                       <div *ngIf="salasStoreForm.get('capacidad')?.errors?.['minLength']">La capacidad debe contener almenos 1 caracter.</div>
+                    </div>
+                   </div>
+                 <button type="submit" class="btn btn-primary">Crear sala</button>
+               </form>
+           </div>
+         </div>
+       </div>
+    </div>
+   </div>
+   

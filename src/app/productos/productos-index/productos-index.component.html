@@ -1,0 +1,38 @@
+<div class="container mt-3" [@fadeInOut]="cargando ? 'void' : 'in'">
+    <div class="row justify-content-center" *ngIf="!cargando; else cargandoTemplate">
+        <table class="table">
+            <thead class="table-primary">
+              <tr>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Precio</th>
+                <th>Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let producto of productos">
+                <td>{{ producto.nombre }}</td>
+                <td>{{ producto.descripcion }}</td>
+                <td>{{ producto.precio }}</td>
+                <td>
+                  <button [routerLink]="['/productos/edit', producto.id]" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
+                  <button (click)="confirmDelete(producto.id)" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+             </div>
+
+             <ng-template #cargandoTemplate>
+              <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+                 <div class="spinner-border text-primary" role="status">
+                   <span class="visually-hidden">Cargando...</span>
+                 </div>
+                 <div class="ms-3">
+                   Cargando datos...
+                 </div>
+              </div>
+             </ng-template>
+             
+   </div>
+   
