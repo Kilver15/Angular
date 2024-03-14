@@ -25,7 +25,7 @@ export class PeliculasService {
 
 
 crearPelicula(pelicula: Pelicula): Observable<Pelicula> {
-  return this.http.post<Pelicula>(`${this.apiUrl}peliculas`, pelicula, this.getOptions());
+  return this.http.post<Pelicula>(this.apiUrl, pelicula, this.getOptions());
 }
 
 indexpelicula(): Observable<Pelicula[]> {
@@ -33,15 +33,15 @@ indexpelicula(): Observable<Pelicula[]> {
 }
 
 getPeliculaById(id: number): Observable<Pelicula> {
-  return this.http.get<Pelicula>(`${this.apiUrl}peliculas/${id}`, this.getOptions());
+  return this.http.get<Pelicula>(`${this.apiUrl}/${id}`, this.getOptions());
 }
 
 updatePelicula(id: number, pelicula: Pelicula): Observable<Pelicula> {
-  return this.http.put<Pelicula>(`${this.apiUrl}peliculas/${id}`, pelicula, this.getOptions());
+  return this.http.put<Pelicula>(`${this.apiUrl}/${id}`, pelicula, this.getOptions());
 }
 
 deletePelicula(id: number): Observable<any> {
- return this.http.delete(`${this.apiUrl}peliculas/${id}`, this.getOptions());
+ return this.http.delete(`${this.apiUrl}/${id}`, this.getOptions());
 }
 
 }
