@@ -97,5 +97,17 @@ export const routes: Routes = [
         path: 'peliculas/edit/:id',
         loadChildren: () => import('./peliculas/peliculas-edit/peliculas-edit.module').then(m => m.PeliculasEditModule),
       },
+      {
+        path: 'boletos/create',
+        loadChildren: () => import('./peliculas/peliculas-store/peliculas-store.module').then(m => m.PeliculasStoreModule),
+      },
+      {
+        path: 'boletos/index',
+        loadChildren: () => import('./peliculas/peliculas-index/peliculas-index.module').then(m => m.PeliculasIndexModule),
+      },
+      {
+        path: 'boletos/edit/:id',
+        loadChildren: () => import('./peliculas/peliculas-edit/peliculas-edit.module').then(m => m.PeliculasEditModule),
+      },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
