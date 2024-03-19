@@ -9,7 +9,6 @@
                 <th>IP</th>
                 <th>Agente</th>
                 <th>Query</th>
-                <th>Opciones</th>
               </tr>
             </thead>
             <tbody>
@@ -22,9 +21,6 @@
                 <td>
                   <pre *ngIf="log.datos">{{ formatDatos(log.datos) }}</pre>
                   <span *ngIf="!log.datos && log.query">{{ log.query }}</span>
-                </td>
-                <td>
-                  <button (click)="confirmDelete(log.id)" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                 </td>
               </tr>
             </tbody>
