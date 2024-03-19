@@ -11,11 +11,11 @@ interface VerificationResponse {
   providedIn: 'root'
 })
 export class VerificacionService {
-  private apiUrl = 'http://localhost:8000/api/auth/verifyCode';
+  private apiUrl = 'http://localhost:8000/api/auth/verify-code';
 
   constructor(private http: HttpClient, private cookieService: CookieService) { }
 
-  token = this.cookieService.getCookie('authToken');
+  token = this.cookieService.getCookie('sanctToken');
 
  verifyCode(code: number): Observable<VerificationResponse> {
   const headers = new HttpHeaders()

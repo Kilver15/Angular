@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './boletos-edit.component.css'
 })
 export class BoletosEditComponent {
-
+  
 }

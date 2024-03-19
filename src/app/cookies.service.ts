@@ -16,7 +16,11 @@ export class CookieService {
     return cookieValue ? cookieValue.pop() ?? null : null;
   }
 
-  deleteCookie(name: string) {
-    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-  }
+  deleteCookie(name: string, path: string = '/', domain: string = '', secure: boolean = false, sameSite: 'Lax' | 'None' | 'Strict' = 'Lax') {
+    const date = new Date();
+    date.setTime(date.getTime() - 1); // Establece la fecha de expiración en el pasado
+    const expires = 'expires=' + date.toUTCString();
+    document.cookie = name + '=' + ';' + expires + ';path=' + path + ';domain=' + domain + (secure ? ';secure' : '') + ';SameSite=' + sameSite;
+   }
+   
 }

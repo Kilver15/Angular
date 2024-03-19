@@ -54,8 +54,9 @@ export class VerificacionComponent implements OnInit {
       this.verificacionService.verifyCode(code).subscribe(
         data => {
           console.log('Código verificado exitosamente', data);
+          this.cookieService.deleteCookie('sanctToken', '/', 'localhost', true, 'Lax');
           this.cookieService.setCookie('authToken', data.token, 1);
-
+          this.router.navigate(['/cines/index']);
          // this.router.navigate(['/dashboard']);
         },
         error => {

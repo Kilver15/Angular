@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
           console.log(response);
         if (response.token) {
           let cookietoken = response.token;
-          this.cookieService.setCookie('authToken', cookietoken, 1);
+          this.cookieService.setCookie('sanctToken', cookietoken, 1);
           this.router.navigate(['/verificacion']);
         } else {
           alert('Por favor, primero activa tu cuenta desde tu correo electronico.');
