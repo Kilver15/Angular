@@ -5,5 +5,6 @@ export interface Log {
     url: string;
     ip: string;
     agent: string;
-    query: string;
+    query: object ;
+  
 }

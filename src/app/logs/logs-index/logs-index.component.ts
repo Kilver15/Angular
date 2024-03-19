@@ -18,6 +18,7 @@ import { RouterLink, Router, UrlSegmentGroup } from '@angular/router';
 export class LogsIndexComponent {
   logs: Log[] = [];
   users: User[] = [];
+  
   cargando: boolean = true;
 
   constructor(private logsService: LogsService,

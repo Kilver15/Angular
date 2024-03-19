@@ -18,4 +18,8 @@ export class LoginService {
   loginUser(loginData: { email: string, password: string }): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(this.apiUrl, loginData);
   }
+
+  logoutUser() {
+    return this.http.post('http://localhost:8000/api/auth/logout',{})
+  }
 }
