@@ -1,6 +1,5 @@
 export interface Funcion {
-    
-    id?: string;
+    id?: number;
     sala_id: number;
     pelicula_id: number;
     fecha: string;

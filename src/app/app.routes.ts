@@ -136,5 +136,20 @@ export const routes: Routes = [
         loadChildren: () => import('./boletos/boletos-edit/boletos-edit.module').then(m => m.BoletosEditModule),
         canActivate: [LoginGuard]
       },
+      {
+        path: 'users/index',
+        loadChildren: () => import('./users/users-index/users-index.module').then(m => m.UsersIndexModule),
+        canActivate: [LoginGuard]
+      },
+      {
+        path: 'users/edit/:id',
+        loadChildren: () => import('./users/users-edit/users-edit.module').then(m => m.UsersEditModule),
+        canActivate: [LoginGuard]
+      },
+      {
+        path: 'logs',
+        loadChildren: () => import('./logs/logs-index/logs-index.module').then(m => m.LogsIndexModule),
+        canActivate: [LoginGuard]
+      },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];

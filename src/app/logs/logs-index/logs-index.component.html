@@ -1,26 +1,27 @@
-<div class="container login-container mt-3" [@fadeInOut]="cargando ? 'void' : 'in'">
+<div class="container mt-3" [@fadeInOut]="cargando ? 'void' : 'in'">
     <div class="row justify-content-center" *ngIf="!cargando; else cargandoTemplate">
         <table class="table">
             <thead class="table-primary">
               <tr>
-                <th>Funcion</th>
                 <th>Usuario</th>
-                <th>Fla</th>
-                <th>Asiento</th>
-                <th>Precio</th>
+                <th>Metodo</th>
+                <th>Url</th>
+                <th>IP</th>
+                <th>Agente</th>
+                <th>Query</th>
                 <th>Opciones</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let boleto of boletos">
-                <td>{{ getFuncionNombre(boleto.id_funcion) }}</td>
-                <td>{{ getUserNombre(boleto.id_user) }}</td>
-                <td>{{ boleto.fila }}</td>
-                <td>{{ boleto.asiento }}</td>
-                <td>{{boleto.precio }}</td>
+              <tr *ngFor="let log of logs">
+                <td>{{ getUserNombre(log.user) }}</td>
+                <td>{{ log.metodo }}</td>
+                <td>{{ log.url }}</td>
+                <td>{{ log.ip }}</td>
+                <td>{{ log.agent }}</td>
+                <td>{{ log.query }}</td>
                 <td>
-                  <button [routerLink]="['/boletos/edit', boleto.id]" class="btn btn-primary btn-spacing"><i class="bi bi-pencil"></i></button>
-                  <button (click)="confirmDelete(boleto.id)" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                  <button (click)="confirmDelete(log.id)" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                 </td>
               </tr>
             </tbody>

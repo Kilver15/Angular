@@ -3,24 +3,20 @@
         <table class="table">
             <thead class="table-primary">
               <tr>
-                <th>Funcion</th>
-                <th>Usuario</th>
-                <th>Fla</th>
-                <th>Asiento</th>
-                <th>Precio</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Rol</th>
                 <th>Opciones</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let boleto of boletos">
-                <td>{{ getFuncionNombre(boleto.id_funcion) }}</td>
-                <td>{{ getUserNombre(boleto.id_user) }}</td>
-                <td>{{ boleto.fila }}</td>
-                <td>{{ boleto.asiento }}</td>
-                <td>{{boleto.precio }}</td>
+              <tr *ngFor="let user of users">
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ getRolNombre(user.rol) }}</td>
                 <td>
-                  <button [routerLink]="['/boletos/edit', boleto.id]" class="btn btn-primary btn-spacing"><i class="bi bi-pencil"></i></button>
-                  <button (click)="confirmDelete(boleto.id)" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                  <button [routerLink]="['/users/edit', user.id]" class="btn btn-primary btn-spacing"><i class="bi bi-pencil"></i></button>
+                  <button (click)="confirmDelete(user.id)" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                 </td>
               </tr>
             </tbody>
