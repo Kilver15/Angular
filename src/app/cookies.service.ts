@@ -22,5 +22,9 @@ export class CookieService {
     const expires = 'expires=' + date.toUTCString();
     document.cookie = name + '=' + ';' + expires + ';path=' + path + ';domain=' + domain + (secure ? ';secure' : '') + ';SameSite=' + sameSite;
    }
+
+   deleteFCookie(name: string) {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  }
    
 }

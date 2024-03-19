@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { VerificacionService } from './verificacion.service';
 import { CookieService } from '../cookies.service';
-
+import { Location } from '@angular/common';
 
 @Component({
  selector: 'app-verificacion',
@@ -34,7 +34,8 @@ export class VerificacionComponent implements OnInit {
  constructor(private formBuilder: FormBuilder, 
   private router: Router,
   private verificacionService: VerificacionService,
-  private cookieService: CookieService) { }
+  private cookieService: CookieService,
+  private location: Location) { }
 
   ngOnInit(): void {
     this.authForm = this.formBuilder.group({
@@ -57,7 +58,7 @@ export class VerificacionComponent implements OnInit {
           this.cookieService.deleteCookie('sanctToken', '/', 'localhost', true, 'Lax');
           this.cookieService.setCookie('authToken', data.token, 1);
           this.router.navigate(['/cines/index']);
-         // this.router.navigate(['/dashboard']);
+          this.location.go(this.location.path());
         },
         error => {
           // Maneja el error aquí

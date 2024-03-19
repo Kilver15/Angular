@@ -19,7 +19,10 @@
                 <td>{{ log.url }}</td>
                 <td>{{ log.ip }}</td>
                 <td>{{ log.agent }}</td>
-                <td>{{  log.query }}</td>
+                <td>
+                  <pre *ngIf="log.datos">{{ formatDatos(log.datos) }}</pre>
+                  <span *ngIf="!log.datos && log.query">{{ log.query }}</span>
+                </td>
                 <td>
                   <button (click)="confirmDelete(log.id)" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                 </td>

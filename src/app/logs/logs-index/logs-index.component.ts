@@ -37,6 +37,10 @@ export class LogsIndexComponent {
     return user ? user.name : 'Usuario no encontrado';
    }
 
+   formatDatos(datos: any): string {
+    return JSON.stringify(datos, null, 2);
+  }
+
   actualizarlog() {
     this.logsService.indexlog().subscribe(
       logs => {
@@ -56,7 +60,7 @@ export class LogsIndexComponent {
    }
    
    deleteGenero(id: number): void {
-    this.logsService.deleteGenero(id).subscribe(
+    this.logsService.deleteLog(id).subscribe(
       response=>{
         console.log('genero elimnado con exito');
       alert('genero eliminado');

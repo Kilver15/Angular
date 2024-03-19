@@ -31,14 +31,18 @@ export class AppComponent implements OnInit {
 
  }
 
- logOut(): void{
-  
+ logOut(event: Event) {
+  event.preventDefault(); // Prevenir el comportamiento predeterminado del enlace
+
   this.loginService.logoutUser().subscribe(
-    response => {
-      console.log(response),
-      this.cookieService.deleteCookie('authToken', '/', 'localhost', true, 'Lax');
-    this.router.navigate(['/login']);}
-  )
-  
- }
+    (response: any) => {
+      console.log(response.message); // Asumiendo que la respuesta contiene una propiedad 'message'
+      console.log('sesion cerrada');
+      this.router.navigate(['/login']);
+    },
+    error => {
+      console.error('Error al cerrar la sesión:', error);
+    }
+  );
+}
 }

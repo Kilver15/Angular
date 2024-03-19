@@ -29,11 +29,11 @@ export class LogsService {
      return this.http.get<Log[]>(this.apiUrl, this.getOptions());
   }
  
-  getGeneroById(id: number): Observable<Log> {
+  getLogById(id: number): Observable<Log> {
      return this.http.get<Log>(`${this.apiUrl}/${id}`, this.getOptions());
   }
 
- deleteGenero(id: number): Observable<any> {
+ deleteLog(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`, this.getOptions());
    }
    
