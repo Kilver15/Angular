@@ -4,6 +4,8 @@ import { Cine } from '../../interfaces/cine.interface';
 import { CommonModule } from '@angular/common';
 import { fadeInOutAnimations } from '../../animations';
 import { RouterLink, Router } from '@angular/router';
+import { interval, Subscription } from 'rxjs';
+import { takeWhile } from 'rxjs/operators';
 @Component({
   selector: 'app-cines-index',
   standalone: true,
@@ -15,12 +17,18 @@ import { RouterLink, Router } from '@angular/router';
 export class CinesIndexComponent {
   cines: Cine[] = [];
   cargando: boolean = true;
+  private pollingSubscription: Subscription | null = null;
+  private componentActive = true;
 
   constructor(private cinesService: CinesService,
     private router: Router,) { }
 
   ngOnInit() {
-    this.actualizarcine();
+    this.pollingSubscription = interval(10000)
+    .pipe(takeWhile(() => this.componentActive))
+    .subscribe(() => {
+      this.actualizarcine();
+    });
   }
   actualizarcine() {
     this.cinesService.indexcine().subscribe(
@@ -51,4 +59,11 @@ export class CinesIndexComponent {
       error => console.error('Error al obtener los cine:', error)
     );
      }
+
+     ngOnDestroy() {
+      this.componentActive = false; // Marcar el componente como inactivo
+      if (this.pollingSubscription) {
+        this.pollingSubscription.unsubscribe(); // Cancelar la suscripción
+      }
+    }
 }
