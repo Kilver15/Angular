@@ -32,8 +32,13 @@ export class AppComponent implements OnInit {
  }
 
  logOut(): void{
-  this.cookieService.deleteCookie('authToken', '/', 'localhost', true, 'Lax');
-  this.loginService.logoutUser();
-  this.router.navigate(['/login']);
+  
+  this.loginService.logoutUser().subscribe(
+    response => {
+      console.log(response),
+      this.cookieService.deleteCookie('authToken', '/', 'localhost', true, 'Lax');
+    this.router.navigate(['/login']);}
+  )
+  
  }
 }
