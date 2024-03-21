@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from '../cookies.service';
 import { tap } from 'rxjs/operators';
+import { AuthInterceptor } from '../auth.interceptor';
 
 interface VerificationResponse {
   token: string;
@@ -24,8 +25,8 @@ export class VerificacionService {
   .set('Content-Type', 'application/json')
   .set('Authorization', 'Bearer ' + this.token);
 
-  const options = { headers, withCredentials: true };
-
+  const options = { headers, withCredentials: true, skipInterceptors: [AuthInterceptor] };
+  
     return this.http.post<VerificationResponse>(this.apiUrl, {code}, options).pipe(
       tap(response => {
         this.cookieService.deleteCookie('sanctToken', '/', 'localhost', true, 'Lax');
