@@ -22,6 +22,7 @@ export class BoletosStoreComponent {
   boletosStoreForm!: FormGroup;
   funciones: Funcion[] = [];
   users: User[] = [];
+  isLoading = false;
 
   constructor(private formBuilder: FormBuilder,
     private boletosService: BoletosService,
@@ -47,6 +48,7 @@ export class BoletosStoreComponent {
 
   onSubmit(): void {
     if (this.boletosStoreForm.valid) {
+      this.isLoading = true;
       console.log(this.boletosStoreForm.value);
       this.boletosService.createBoleto(this.boletosStoreForm.value).subscribe(
         response => {

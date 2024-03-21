@@ -17,7 +17,7 @@ export class GenerosEditComponent {
   generosEditForm!: FormGroup;
   id: number = 0;
   cargando: boolean = true;
-
+  isLoading = false;
  constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -50,6 +50,7 @@ export class GenerosEditComponent {
 
  onSubmit(): void {
     if (this.generosEditForm.valid) {
+      this.isLoading = true;
       this.generosService.updateGenero(this.id, this.generosEditForm.value).subscribe(
         response=>{
           console.log('genero editado con exito');

@@ -23,6 +23,7 @@ export class FuncionesEditComponent {
   cargando: boolean = true;
   peliculas: Pelicula[] = [];
   salas: Sala[] = [];
+  isLoading = false;
 
  constructor(
     private formBuilder: FormBuilder,
@@ -70,6 +71,7 @@ export class FuncionesEditComponent {
 
  onSubmit(): void {
     if (this.funcionesEditForm.valid) {
+      this.isLoading = true;
       this.funcionesService.updateFuncion(this.id, this.funcionesEditForm.value).subscribe(
         response=>{
           console.log('funcion editada con exito');

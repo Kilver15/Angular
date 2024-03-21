@@ -13,7 +13,10 @@
               <div *ngIf="authForm.get('code')?.errors?.['minlength']">El codigo debe tener 6 caracteres.</div>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary">Ingresar</button>
+          <button type="submit" [disabled]="isLoading" class="btn btn-primary" (click)="onSubmit()">
+            <span *ngIf="!isLoading">Ingresar</span>
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+           </button>
           </form>
          </div>
        </div>

@@ -21,7 +21,10 @@
                  <div *ngIf="loginForm.get('password')?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres.</div>
                </div>
              </div>
-             <button type="submit" [disabled]="!loginForm.valid" class="btn btn-primary">Iniciar sesión</button>
+             <button type="submit" [disabled]="isLoading" class="btn btn-primary" (click)="onSubmit()">
+              <span *ngIf="!isLoading">Iniciar sesión</span>
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+             </button>             
              <a routerLink="/register" class="btn btn-link">¿No tienes cuenta? Regístrate aquí</a>
             </form>
          </div>

@@ -9,7 +9,6 @@ import { LoginService } from './login.service';
 import { CookieService } from '../cookies.service';
 import { User } from '../interfaces/user.interface';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -31,6 +30,7 @@ import { User } from '../interfaces/user.interface';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  isLoading = false;
 
   constructor(private formBuilder: FormBuilder, 
     private router: Router, 
@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
-
+    this.isLoading = true;
     const userData: User = {
       email: this.loginForm.value.email,
       password: this.loginForm.value.password,

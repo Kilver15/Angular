@@ -20,7 +20,8 @@ export class PeliculasStoreComponent {
     peliculasStoreForm!: FormGroup;
     generos: Genero[] = [];
     generosSeleccionados: Genero[] = [];
-  
+    isLoading = false;
+
     constructor(private formBuilder: FormBuilder,
       private generosService: GenerosService,
       private peliculasService: PeliculasService,
@@ -52,6 +53,7 @@ export class PeliculasStoreComponent {
   
     onSubmit(): void {
       if (this.peliculasStoreForm.valid) {
+        this.isLoading = true;
         const formValue = this.peliculasStoreForm.value;
         const data = {
           ...formValue,

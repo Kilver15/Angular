@@ -21,7 +21,7 @@ export class PeliculasEditComponent {
   cargando: boolean = true;
   generos: Genero[] = [];
   generosSeleccionados: Genero[] = [];
-
+  isLoading = false;
  constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -83,6 +83,7 @@ export class PeliculasEditComponent {
 
  onSubmit(): void {
   if (this.peliculasEditForm.valid) {
+    this.isLoading = true;
     const formValue = this.peliculasEditForm.value;
     const data = {
       ...formValue,

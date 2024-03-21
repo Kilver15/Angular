@@ -23,6 +23,7 @@ export class BoletosEditComponent {
   cargando: boolean = true;
   funciones: Funcion[] = [];
   users: User[] = [];
+  isLoading = false;
 
  constructor(
     private formBuilder: FormBuilder,
@@ -72,6 +73,7 @@ export class BoletosEditComponent {
 
  onSubmit(): void {
     if (this.boletosEditForm.valid) {
+      this.isLoading = true;
       this.boletosService.updateBoleto(this.id, this.boletosEditForm.value).subscribe(
         response=>{
           console.log('funcion editada con exito');

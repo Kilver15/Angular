@@ -30,7 +30,8 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class VerificacionComponent implements OnInit {
   authForm!: FormGroup
-
+  isLoading = false;
+  
  constructor(private formBuilder: FormBuilder, 
   private router: Router,
   private verificacionService: VerificacionService,
@@ -45,6 +46,7 @@ export class VerificacionComponent implements OnInit {
 
   onSubmit() {
     if (this.authForm.valid) {
+      this.isLoading = true;
       const code = this.authForm.get('code')?.value;
       this.verificacionService.verifyCode(code).subscribe(
         data => {

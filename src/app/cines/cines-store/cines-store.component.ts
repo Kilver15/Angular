@@ -28,7 +28,7 @@ import { Router } from '@angular/router';
 })
 export class CinesStoreComponent implements OnInit {
   cinesStoreForm!: FormGroup;
-
+  isLoading = false;
   constructor(private formBuilder: FormBuilder,
     private cinesService: CinesService,
     private router: Router) { }
@@ -46,6 +46,7 @@ export class CinesStoreComponent implements OnInit {
 
   onSubmit(): void {
     if (this.cinesStoreForm.valid) {
+      this.isLoading = true;
       console.log(this.cinesStoreForm.value);
       this.cinesService.createCine(this.cinesStoreForm.value).subscribe(
         response => {

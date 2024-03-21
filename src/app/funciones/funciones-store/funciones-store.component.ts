@@ -25,6 +25,7 @@ export class FuncionesStoreComponent {
   funcionesStoreForm!: FormGroup;
   salas: Sala[] = [];
   peliculas: Pelicula[] = [];
+  isLoading = false;
 
   constructor(private formBuilder: FormBuilder,
     private salasService: SalasService,
@@ -70,6 +71,7 @@ export class FuncionesStoreComponent {
 
   onSubmit(): void {
     if (this.funcionesStoreForm.valid) {
+      this.isLoading = true;
       const formattedFecha = this.formatDate(this.funcionesStoreForm.get('fecha')?.value);
       if (formattedFecha) {
         this.funcionesStoreForm.get('fecha')?.setValue(formattedFecha, {emitEvent: false});

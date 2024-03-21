@@ -20,7 +20,7 @@ export class SalasEditComponent {
   id: number = 0;
   cargando: boolean = true;
   cines: Cine[] = [];
-
+  isLoading = false;
  constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -61,6 +61,7 @@ export class SalasEditComponent {
 
  onSubmit(): void {
     if (this.salasEditForm.valid) {
+      this.isLoading = true;
       this.salasService.updateSala(this.id, this.salasEditForm.value).subscribe(
         response=>{
           console.log('sala editada con exito');

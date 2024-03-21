@@ -28,6 +28,8 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
+  isLoading = false;
+
   constructor(private formBuilder: FormBuilder, 
     private postService: PostService,
     private router: Router,) {}
@@ -53,6 +55,7 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     if (this.registerForm.valid) {
+      this.isLoading = true;
       this.postService.registerUser(this.registerForm.value).subscribe(
         response => {
           console.log(response);

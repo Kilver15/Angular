@@ -20,6 +20,7 @@ export class CombosStoreComponent {
   combosStoreForm!: FormGroup;
   productos: Producto[] = [];
   productosSeleccionados: Producto[] = [];
+  isLoading = false;
 
   constructor(private formBuilder: FormBuilder,
     private productosService: ProductosService,
@@ -51,6 +52,7 @@ export class CombosStoreComponent {
 
   onSubmit(): void {
     if (this.combosStoreForm.valid) {
+      this.isLoading = true;
       const formValue = this.combosStoreForm.value;
       const data = {
         ...formValue,
