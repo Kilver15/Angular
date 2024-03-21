@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { VerificacionService } from './verificacion.service';
 import { CookieService } from '../cookies.service';
-import { Location } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
  selector: 'app-verificacion',
@@ -35,7 +35,7 @@ export class VerificacionComponent implements OnInit {
   private router: Router,
   private verificacionService: VerificacionService,
   private cookieService: CookieService,
-  private location: Location) { }
+  private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.authForm = this.formBuilder.group({
@@ -43,28 +43,20 @@ export class VerificacionComponent implements OnInit {
     });
   }
 
- onSubmit() {
+  onSubmit() {
     if (this.authForm.valid) {
-      if (!this.authForm.get('code')?.value){
-        alert('Por favor ingresa un codigo valido');
-      }
-      console.log(this.authForm.value);
-      
       const code = this.authForm.get('code')?.value;
-      console.log('Enviando código:', code);
       this.verificacionService.verifyCode(code).subscribe(
         data => {
           console.log('Código verificado exitosamente', data);
-          this.cookieService.deleteCookie('sanctToken', '/', 'localhost', true, 'Lax');
+          localStorage.setItem('authToken', data.token);
           this.cookieService.setCookie('authToken', data.token, 1);
-          this.router.navigate(['/cines/index']);
-          this.location.go(this.location.path());
+          this.cookieService.setCookie('rol', String(data.rol_id), 1);
+          this.changeDetectorRef.detectChanges(); // Detectar cambios
+          window.location.reload();
         },
-        error => {
-          // Maneja el error aquí
-          console.error('Error al verificar el código', error);
-        }
+        error => console.error('Error al verificar el código', error)
       );
     }
- }
+  }
 }

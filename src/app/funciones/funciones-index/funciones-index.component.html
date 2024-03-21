@@ -7,7 +7,7 @@
                 <th>Pelicula</th>
                 <th>Fecha</th>
                 <th>Hora de Inicio</th>
-                <th>Opciones</th>
+                <th *ngIf="rolId == 3">Opciones</th>
               </tr>
             </thead>
             <tbody>
@@ -16,7 +16,7 @@
                 <td>{{ getPeliculaNombre(funcion.pelicula_id) }}</td>
                 <td>{{ funcion.fecha }}</td>
                 <td>{{ funcion.hora_inicio }}</td>
-                <td>
+                <td *ngIf="rolId == 3">
                   <button [routerLink]="['/funciones/edit', funcion.id]" class="btn btn-primary btn-spacing"><i class="bi bi-pencil"></i></button>
                   <button (click)="confirmDelete(funcion.id)" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                 </td>

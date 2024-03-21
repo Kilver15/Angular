@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-     <a class="navbar-brand" routerLink="#">TRCine</a>
+     <a class="navbar-brand" >TRCine</a>
      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
        <span class="navbar-toggler-icon"></span>
      </button>
@@ -11,7 +11,7 @@
             Cines
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" routerLink="/cines/create">Crear Cine</a></li>
+            <li><a class="dropdown-item" *ngIf="rolId != 1" routerLink="/cines/create">Crear Cine</a></li>
             <li><a class="dropdown-item" routerLink="/cines/index">Ver Cines</a></li>
           </ul>
         </li>
@@ -20,7 +20,7 @@
             Salas
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" routerLink="/salas/create">Crear Sala</a></li>
+            <li><a class="dropdown-item" *ngIf="rolId == 3" routerLink="/salas/create">Crear Sala</a></li>
             <li><a class="dropdown-item" routerLink="/salas/index">Ver Salas</a></li>
           </ul>
         </li>
@@ -29,7 +29,7 @@
             Combos
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" routerLink="/combos/create">Crear Combo</a></li>
+            <li><a class="dropdown-item" *ngIf="rolId == 3" routerLink="/combos/create">Crear Combo</a></li>
             <li><a class="dropdown-item" routerLink="/combos/index">Ver Combos</a></li>
           </ul>
         </li>
@@ -38,7 +38,7 @@
             Generos
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" routerLink="/generos/create">Crear Genero</a></li>
+            <li><a class="dropdown-item" *ngIf="rolId != 1" routerLink="/generos/create">Crear Genero</a></li>
             <li><a class="dropdown-item" routerLink="/generos/index">Ver Generos</a></li>
           </ul>
         </li>
@@ -47,7 +47,7 @@
             Productos
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" routerLink="/productos/create">Crear Producto</a></li>
+            <li><a class="dropdown-item" *ngIf="rolId == 3" routerLink="/productos/create">Crear Producto</a></li>
             <li><a class="dropdown-item" routerLink="/productos/index">Ver Productos</a></li>
           </ul>
         </li>
@@ -56,7 +56,7 @@
             Peliculas
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" routerLink="/peliculas/create">Crear Pelicula</a></li>
+            <li><a class="dropdown-item" *ngIf="rolId == 3" routerLink="/peliculas/create">Crear Pelicula</a></li>
             <li><a class="dropdown-item" routerLink="/peliculas/index">Ver Pelicula</a></li>
           </ul>
         </li>
@@ -65,31 +65,31 @@
             Funciones
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" routerLink="/funciones/create">Crear funcion</a></li>
+            <li><a class="dropdown-item" *ngIf="rolId == 3" routerLink="/funciones/create">Crear funcion</a></li>
             <li><a class="dropdown-item" routerLink="/funciones/index">Ver Funciones</a></li>
           </ul>
         </li>
-        <li><a class="nav-link" routerLink="/users/index" *ngIf="hasAuthToken">Usuarios</a></li>
-        <li><a class="nav-link" routerLink="/logs" *ngIf="hasAuthToken">Logs</a></li>
+        <li><a class="nav-link" routerLink="/users/index" *ngIf="hasAuthToken && rolId == 3">Usuarios</a></li>
+        <li><a class="nav-link" routerLink="/logs" *ngIf="hasAuthToken && rolId == 3">Logs</a></li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" *ngIf="hasAuthToken" routerLink="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Boletos
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" routerLink="/boletos/create">Crear boleto</a></li>
+            <li><a class="dropdown-item" *ngIf="rolId == 3" routerLink="/boletos/create">Crear boleto</a></li>
             <li><a class="dropdown-item" routerLink="/boletos/index">Ver Boletos</a></li>
           </ul>
         </li>
        </ul>
        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-         <li class="nav-item">
-           <a class="nav-link" routerLink="/login" *ngIf="!hasAuthToken">Iniciar Sesion</a>
+         <li class="nav-item"*ngIf="!hasAuthToken">
+           <a class="nav-link" routerLink="/login">Iniciar Sesion</a>
          </li>
-         <li class="nav-item">
-           <a class="nav-link" routerLink="/register" *ngIf="!hasAuthToken">Regitrarse</a>
+         <li class="nav-item" *ngIf="!hasAuthToken">
+           <a class="nav-link" routerLink="/register" >Regitrarse</a>
          </li>
          <li class="nav-item" *ngIf="hasAuthToken">
-          <a class="nav-link" routerLink="" (click)="logOut($event)">Cerrar Sesión</a>
+          <button class="nav-link"  (click)="logOut($event)">Cerrar Sesión</button>
         </li>
        </ul>
      </div>

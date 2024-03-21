@@ -3,7 +3,8 @@ import { PeliculasService } from '../peliculas.service';
 import { Pelicula } from '../../interfaces/pelicula.interface';
 import { CommonModule } from '@angular/common';
 import { fadeInOutAnimations } from '../../animations';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
+import { CookieService } from '../../cookies.service';
 @Component({
   selector: 'app-peliculas-index',
   standalone: true,
@@ -15,12 +16,14 @@ import { RouterLink, Router } from '@angular/router';
 export class PeliculasIndexComponent {
   peliculas: Pelicula[] = [];
   cargando: boolean = true;
+  rolId: number = 0;
 
   constructor(private peliculasService: PeliculasService,
-    private router: Router,) { }
+    private cookieService: CookieService,) { }
 
   ngOnInit() {
     this.actualizarpeliculas();
+    this.rolId = parseInt(this.cookieService.getCookie('rol') || '0', 10);
   }
   actualizarpeliculas() {
     this.peliculasService.indexpelicula().subscribe(

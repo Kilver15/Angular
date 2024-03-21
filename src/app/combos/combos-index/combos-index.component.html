@@ -7,7 +7,7 @@
                 <th>Descripcion</th>
                 <th>Precio</th>
                 <th>Productos</th>
-                <th>Opciones</th>
+                <th *ngIf="rolId == 3">Opciones</th>
               </tr>
             </thead>
             <tbody>
@@ -20,7 +20,7 @@
                         <li *ngFor="let producto of combo.productos">{{ producto.nombre }}</li>
                     </ul>
                 </td>
-                <td>
+                <td *ngIf="rolId == 3">
                   <button [routerLink]="['/combos/edit', combo.id]" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                   <button (click)="confirmDelete(combo.id)" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                 </td>

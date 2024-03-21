@@ -7,7 +7,7 @@
                 <th>Dirección</th>
                 <th>Ciudad</th>
                 <th>Capacidad Total</th>
-                <th>Opciones</th>
+                <th *ngIf="rolId != 1">Opciones</th>
               </tr>
             </thead>
             <tbody>
@@ -16,7 +16,7 @@
                 <td>{{ cine['dirección'] }}</td>
                 <td>{{ cine.ciudad }}</td>
                 <td>{{ cine.capacidad_total }}</td>
-                <td>
+                <td *ngIf="rolId != 1">
                   <button [routerLink]="['/cines/edit', cine.id]" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                   <button (click)="confirmDelete(cine.id)" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                 </td>

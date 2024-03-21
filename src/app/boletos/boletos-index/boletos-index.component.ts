@@ -7,7 +7,8 @@ import { User } from '../../interfaces/user.interface';
 import { Funcion } from '../../interfaces/funcion.interface';
 import { CommonModule } from '@angular/common';
 import { fadeInOutAnimations } from '../../animations';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
+import { CookieService } from '../../cookies.service';
 @Component({
   selector: 'app-boletos-index',
   standalone: true,
@@ -21,13 +22,16 @@ export class BoletosIndexComponent {
   users: User[] = [];
   funciones: Funcion[] = [];
   cargando: boolean = true;
+  rolId: number = 0;
 
   constructor(private usersService: UsersService,
     private boletosService: BoletosService,
-    private funcionesService: FuncionesService) { }
+    private funcionesService: FuncionesService,
+    private cookieService: CookieService) { }
 
   ngOnInit() {
     this.actualizarboleto();
+    this.rolId = parseInt(this.cookieService.getCookie('rol') || '0', 10);
     this.funcionesService.indexfuncion().subscribe(funciones => {
       this.funciones = funciones;
    });

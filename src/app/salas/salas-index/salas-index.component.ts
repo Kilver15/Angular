@@ -5,7 +5,8 @@ import { Sala } from '../../interfaces/sala.interface';
 import { Cine } from '../../interfaces/cine.interface';
 import { CommonModule } from '@angular/common';
 import { fadeInOutAnimations } from '../../animations';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
+import { CookieService } from '../../cookies.service';
 @Component({
   selector: 'app-salas-index',
   standalone: true,
@@ -17,16 +18,19 @@ import { RouterLink, Router } from '@angular/router';
 export class SalasIndexComponent {
   salas: Sala[] = [];
   cines: Cine[] = [];
+  rolId: number = 0;
   cargando: boolean = true;
 
   constructor(private cinesService: CinesService,
-    private salasService: SalasService,) { }
+    private salasService: SalasService,
+    private cookieService: CookieService ) { }
 
   ngOnInit() {
     this.actualizarsala();
     this.cinesService.indexcine().subscribe(cines => {
       this.cines = cines;
    });
+   this.rolId = parseInt(this.cookieService.getCookie('rol') || '0', 10);
   }
 
   getCineNombre(cineId: number): string {

@@ -12,7 +12,7 @@ interface LoginResponse {
   providedIn: 'root'
 })
 export class LoginService {
-  private apiUrl = 'http://localhost:8000/api/auth/login';
+  private apiUrl = 'http://localhost:8000/api/auth';
   private token = this.cookieService.getCookie('authToken');
  
 
@@ -32,11 +32,10 @@ export class LoginService {
 }
 
   loginUser(loginData: { email: string, password: string }): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(this.apiUrl, loginData);
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, loginData);
   }
 
   logoutUser() {
-    this.cookieService.deleteFCookie('authToken');
-    return this.http.post('http://localhost:8000/api/auth/logout',this.getOptions())
-  }
+    return this.http.post<any>(`${this.apiUrl}/logout`, {}, this.getOptions());
+   }   
 }

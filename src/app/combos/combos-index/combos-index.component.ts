@@ -3,7 +3,8 @@ import { CombosService } from '../combos.service';
 import { Combo } from '../../interfaces/combo.interface';
 import { CommonModule } from '@angular/common';
 import { fadeInOutAnimations } from '../../animations';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
+import { CookieService } from '../../cookies.service';
 @Component({
   selector: 'app-combos-index',
   standalone: true,
@@ -15,12 +16,14 @@ import { RouterLink, Router } from '@angular/router';
 export class CombosIndexComponent {
   combos: Combo[] = [];
   cargando: boolean = true;
+  rolId: number = 0;
 
   constructor(private combosService: CombosService,
-    private router: Router,) { }
+    private cookieService: CookieService) { }
 
   ngOnInit() {
     this.actualizarcombo();
+    this.rolId = parseInt(this.cookieService.getCookie('rol') || '0', 10);
   }
   actualizarcombo() {
     this.combosService.indexcombo().subscribe(

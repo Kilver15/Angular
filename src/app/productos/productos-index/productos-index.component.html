@@ -6,7 +6,7 @@
                 <th>Nombre</th>
                 <th>Descripcion</th>
                 <th>Precio</th>
-                <th>Opciones</th>
+                <th *ngIf="rolId == 3">Opciones</th>
               </tr>
             </thead>
             <tbody>
@@ -14,7 +14,7 @@
                 <td>{{ producto.nombre }}</td>
                 <td>{{ producto.descripcion }}</td>
                 <td>{{ producto.precio }}</td>
-                <td>
+                <td *ngIf="rolId == 3">
                   <button [routerLink]="['/productos/edit', producto.id]" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                   <button (click)="confirmDelete(producto.id)" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                 </td>

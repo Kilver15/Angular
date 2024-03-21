@@ -3,7 +3,8 @@ import { ProductosService } from '../productos.service';
 import { Producto } from '../../interfaces/producto.interface';
 import { CommonModule } from '@angular/common';
 import { fadeInOutAnimations } from '../../animations';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
+import { CookieService } from '../../cookies.service';
 @Component({
   selector: 'app-productos-index',
   standalone: true,
@@ -15,12 +16,14 @@ import { RouterLink, Router } from '@angular/router';
 export class ProductosIndexComponent {
   productos: Producto[] = [];
   cargando: boolean = true;
+  rolId: number = 0;
 
   constructor(private productosService: ProductosService,
-    private router: Router,) { }
+    private cookieService: CookieService) { }
 
   ngOnInit() {
     this.actualizarproducto();
+    this.rolId = parseInt(this.cookieService.getCookie('rol') || '0', 10);
   }
   actualizarproducto() {
     this.productosService.indexproducto().subscribe(
