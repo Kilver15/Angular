@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ProductosIndexComponent } from '../productos-index/productos-index.component';
 import { RouterModule } from '@angular/router';
 
+
+
 @NgModule({
 imports: [
     ProductosIndexComponent,
