@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 })
 export class GenerosStoreComponent {
   generosStoreForm!: FormGroup;
-
+  isLoading = false;
   constructor(private formBuilder: FormBuilder,
     private generosService: GenerosService,
     private router: Router) { }
@@ -31,6 +31,7 @@ export class GenerosStoreComponent {
 
   onSubmit(): void {
     if (this.generosStoreForm.valid) {
+      this.isLoading = true;
       console.log(this.generosStoreForm.value);
       this.generosService.createGenero(this.generosStoreForm.value).subscribe(
         response => {

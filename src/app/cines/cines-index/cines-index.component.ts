@@ -3,9 +3,11 @@ import { CinesService } from '../cines.service';
 import { Cine } from '../../interfaces/cine.interface';
 import { CommonModule } from '@angular/common';
 import { fadeInOutAnimations } from '../../animations';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { interval, Subscription } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
+import { CookieService } from '../../cookies.service';
+
 @Component({
   selector: 'app-cines-index',
   standalone: true,
@@ -17,18 +19,22 @@ import { takeWhile } from 'rxjs/operators';
 export class CinesIndexComponent {
   cines: Cine[] = [];
   cargando: boolean = true;
+  rolId: number = 0;
+
   private pollingSubscription: Subscription | null = null;
   private componentActive = true;
 
   constructor(private cinesService: CinesService,
-    private router: Router,) { }
+    private cookieService: CookieService) { }
 
   ngOnInit() {
+    this.rolId = parseInt(this.cookieService.getCookie('rol') || '0', 10);
     this.pollingSubscription = interval(10000)
     .pipe(takeWhile(() => this.componentActive))
     .subscribe(() => {
       this.actualizarcine();
     });
+
   }
   actualizarcine() {
     this.cinesService.indexcine().subscribe(
@@ -61,9 +67,9 @@ export class CinesIndexComponent {
      }
 
      ngOnDestroy() {
-      this.componentActive = false; // Marcar el componente como inactivo
+      this.componentActive = false;
       if (this.pollingSubscription) {
-        this.pollingSubscription.unsubscribe(); // Cancelar la suscripción
+        this.pollingSubscription.unsubscribe();
       }
     }
 }

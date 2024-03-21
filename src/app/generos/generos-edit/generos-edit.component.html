@@ -21,7 +21,10 @@
                   </div>
                 </div>
               </div>
-              <button type="submit" class="btn btn-primary">Actualizar</button>
+              <button type="submit" [disabled]="isLoading" class="btn btn-primary" (click)="onSubmit()">
+                <span *ngIf="!isLoading">Guardar</span>
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+               </button>
             </form>
           </div>
       </div>

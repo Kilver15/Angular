@@ -17,6 +17,7 @@ export class ProductosEditComponent {
   productosEditForm!: FormGroup;
   id: number = 0;
   cargando: boolean = true;
+  isLoading = false;
 
  constructor(
     private formBuilder: FormBuilder,
@@ -54,6 +55,7 @@ export class ProductosEditComponent {
 
  onSubmit(): void {
     if (this.productosEditForm.valid) {
+      this.isLoading = true;
       this.productosService.updateProducto(this.id, this.productosEditForm.value).subscribe(
         response=>{
           console.log('producto editado con exito');

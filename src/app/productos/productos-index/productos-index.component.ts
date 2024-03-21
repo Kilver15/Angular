@@ -3,6 +3,7 @@ import { ProductosService } from '../productos.service';
 import { Producto } from '../../interfaces/producto.interface';
 import { CommonModule } from '@angular/common';
 import { fadeInOutAnimations } from '../../animations';
+import { CookieService } from '../../cookies.service';
 import { RouterLink, Router } from '@angular/router';
 import { SseClient } from 'ngx-sse-client';
 import { Subscription } from 'rxjs';
@@ -18,23 +19,22 @@ import { Subscription } from 'rxjs';
 export class ProductosIndexComponent implements OnInit, OnDestroy {
   productos: Producto[] = [];
   cargando: boolean = true;
+  rolId: number = 0;
   private sseSubscription: Subscription | undefined;
 
-  constructor(
-    private productosService: ProductosService,
+  constructor(private productosService: ProductosService,
+    private cookieService: CookieService,
     private router: Router,
-    private sseClient: SseClient
-  ) {}
+    private sseClient: SseClient) { }
 
   ngOnInit() {
-    this.actualizarproducto();
-
     // Suscripción al evento SSE 'new_product'
     this.sseSubscription = this.sseClient.stream('/api/sse').subscribe((event: any) => {
       console.log('Evento recibido:', event);
       // Actualizar la tabla de productos
       this.actualizarproducto();
     });
+    this.rolId = parseInt(this.cookieService.getCookie('rol') || '0', 10);
   }
 
   ngOnDestroy() {

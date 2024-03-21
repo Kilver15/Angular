@@ -6,7 +6,7 @@
                 <th>Numero</th>
                 <th>Cine</th>
                 <th>Capacidad</th>
-                <th>Opciones</th>
+                <th *ngIf="rolId == 3">Opciones</th>
               </tr>
             </thead>
             <tbody>
@@ -14,7 +14,7 @@
                 <td>{{ sala.numero_sala }}</td>
                 <td>{{ getCineNombre(sala.cine_id) }}</td>
                 <td>{{ sala.capacidad }}</td>
-                <td>
+                <td *ngIf="rolId == 3">
                   <button [routerLink]="['/salas/edit', sala.id]" class="btn btn-primary btn-spacing"><i class="bi bi-pencil"></i></button>
                   <button (click)="confirmDelete(sala.id)" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                 </td>

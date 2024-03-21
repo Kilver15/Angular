@@ -47,7 +47,10 @@
                        <div *ngIf="salasStoreForm.get('capacidad')?.errors?.['minLength']">La capacidad debe contener almenos 1 caracter.</div>
                     </div>
                    </div>
-                 <button type="submit" class="btn btn-primary">Crear sala</button>
+                   <button type="submit" [disabled]="isLoading" class="btn btn-primary" (click)="onSubmit()">
+                     <span *ngIf="!isLoading">Guardar</span>
+                     <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
                </form>
            </div>
          </div>

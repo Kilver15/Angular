@@ -3,11 +3,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from '../cookies.service';
 import { tap } from 'rxjs/operators';
-import { AuthService } from '../auth.service'
+import { AuthInterceptor } from '../auth.interceptor';
 
 interface VerificationResponse {
   token: string;
-  user_id?: number;
+  rol_id?: number;
 }
 
 @Injectable({
@@ -16,7 +16,7 @@ interface VerificationResponse {
 export class VerificacionService {
   private apiUrl = 'http://localhost:8000/api/auth/verify-code';
 
-  constructor(private http: HttpClient, private cookieService: CookieService, private authService: AuthService) { }
+  constructor(private http: HttpClient, private cookieService: CookieService) { }
 
   token = this.cookieService.getCookie('sanctToken');
 
@@ -25,13 +25,12 @@ export class VerificacionService {
   .set('Content-Type', 'application/json')
   .set('Authorization', 'Bearer ' + this.token);
 
-  const options = { headers, withCredentials: true };
-
+  const options = { headers, withCredentials: true, skipInterceptors: [AuthInterceptor] };
+  
     return this.http.post<VerificationResponse>(this.apiUrl, {code}, options).pipe(
       tap(response => {
-        if (response.user_id) {
-          this.authService.setUserId(response.user_id);
-        }
+        this.cookieService.deleteCookie('sanctToken', '/', 'localhost', true, 'Lax');
+          
       })
     );;
  }

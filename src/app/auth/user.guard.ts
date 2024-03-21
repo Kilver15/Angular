@@ -6,23 +6,17 @@ import { CookieService } from '../cookies.service';
 @Injectable({
  providedIn: 'root',
 })
-export class VerificacionGuard implements CanActivate {
+export class Userguard implements CanActivate {
  constructor(private cookieService: CookieService, private router: Router) {}
 
  canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const hasSanctToken = this.cookieService.getCookie('sanctToken') !== null;
-    const hasAuthToken = this.cookieService.getCookie('authToken') !== null;
+    const rol = parseInt(this.cookieService.getCookie('rol') || '0', 10);
 
-    if (!hasSanctToken) {
-      // Redirige al usuario a la página de login si no tiene sanctToken
-      if (hasAuthToken) {
-        this.router.navigate(['/cines/index']);
-      }
-      return this.router.createUrlTree(['/login']);
+    if (rol == 1) {
+      return this.router.createUrlTree(['/cines/index']);
     }
-
 
     return true;
  }

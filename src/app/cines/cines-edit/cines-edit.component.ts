@@ -17,6 +17,7 @@ export class CinesEditComponent {
   cinesEditForm!: FormGroup;
   id: number = 0;
   cargando: boolean = true;
+  isLoading = false;
 
  constructor(
     private formBuilder: FormBuilder,
@@ -56,6 +57,7 @@ export class CinesEditComponent {
 
  onSubmit(): void {
     if (this.cinesEditForm.valid) {
+      this.isLoading = true;
       this.cinesService.updateCine(this.id, this.cinesEditForm.value).subscribe(
         response=>{
           console.log('cine editado con exito');

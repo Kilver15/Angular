@@ -66,7 +66,10 @@
                        <div *ngIf="registerForm.get('password_confirmation')?.errors?.['mismatch']">Las contraseñas no coinciden.</div>
                      </div>
                    </div>
-                 <button type="submit" class="btn btn-primary">Registrarse</button>
+                   <button type="submit" [disabled]="isLoading" class="btn btn-primary" (click)="onSubmit()">
+                     <span *ngIf="!isLoading">Registrarse</span>
+                     <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
                  <a routerLink="/login" class="btn btn-link">¿Ya tienes una cuenta? Inicia sesion aquí</a>
                </form>
             </div>

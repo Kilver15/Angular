@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 })
 export class ProductosStoreComponent {
   productosStoreForm!: FormGroup;
-
+  isLoading = false;
   constructor(private formBuilder: FormBuilder,
     private productosService: ProductosService,
     private router: Router) { }
@@ -33,6 +33,7 @@ export class ProductosStoreComponent {
 
   onSubmit(): void {
     if (this.productosStoreForm.valid) {
+      this.isLoading = true;
       console.log(this.productosStoreForm.value);
       this.productosService.createProducto(this.productosStoreForm.value).subscribe(
         response => {

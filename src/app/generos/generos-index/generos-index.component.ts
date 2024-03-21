@@ -3,7 +3,9 @@ import { GenerosService } from '../generos.service';
 import { Genero } from '../../interfaces/genero.interface';
 import { CommonModule } from '@angular/common';
 import { fadeInOutAnimations } from '../../animations';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
+import { CookieService } from '../../cookies.service';
+
 @Component({
   selector: 'app-generos-index',
   standalone: true,
@@ -15,12 +17,14 @@ import { RouterLink, Router } from '@angular/router';
 export class GenerosIndexComponent {
   generos: Genero[] = [];
   cargando: boolean = true;
+  rolId: number = 0;
 
   constructor(private generosService: GenerosService,
-    private router: Router,) { }
+    private cookieService: CookieService) { }
 
   ngOnInit() {
     this.actualizargenero();
+    this.rolId = parseInt(this.cookieService.getCookie('rol') || '0', 10);
   }
   actualizargenero() {
     this.generosService.indexgenero().subscribe(

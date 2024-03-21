@@ -33,6 +33,7 @@ roles: Rol[] = []
     this.userService.indexroles().subscribe(roles => {
       this.roles = roles;
    });
+   
  }
 
  private initForm(): void {
@@ -40,8 +41,15 @@ roles: Rol[] = []
       name: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         rol: ['', Validators.required],
+        
       });
  }  
+
+ passwordMatchValidator(group: FormGroup) {
+      const password = group.get('password')?.value;
+      const password_confirmation = group.get('password_confirmation')?.value;
+      return password === password_confirmation ? null : { mismatch: true };
+    }
 
 
  private loadUser(): void {
@@ -50,6 +58,7 @@ roles: Rol[] = []
        this.usersEditForm.patchValue({
          name: user.name,
          email: user.email,
+         rol: user.rol,
        });
        this.cargando = false;
      });
@@ -58,14 +67,19 @@ roles: Rol[] = []
 
  onSubmit(): void {
     if (this.usersEditForm.valid) {
+      console.log(this.usersEditForm.value)
       this.userService.updateUser(this.id, this.usersEditForm.value).subscribe(
         response=>{
-          console.log('sala editada con exito');
+          console.log('usuario editado con exito');
       alert('Informacion actualizada con exito');
       this.router.navigate(['/users/index']);
         },
-        error => console.error('Error al crear la sala:', error)
+        error => console.error('Error al editar:', error)
       );
+    }
+    else{
+      console.log('formulario invalido');
+      console.log(this.usersEditForm.value)
     }
  }
 }

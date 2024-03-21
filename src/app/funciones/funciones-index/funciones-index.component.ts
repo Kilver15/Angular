@@ -7,7 +7,8 @@ import { Pelicula } from '../../interfaces/pelicula.interface';
 import { Funcion } from '../../interfaces/funcion.interface';
 import { CommonModule } from '@angular/common';
 import { fadeInOutAnimations } from '../../animations';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
+import { CookieService } from '../../cookies.service';
 @Component({
   selector: 'app-funciones-index',
   standalone: true,
@@ -21,13 +22,16 @@ export class FuncionesIndexComponent {
   peliculas: Pelicula[] = [];
   funciones: Funcion[] = [];
   cargando: boolean = true;
+  rolId: number = 0;
 
   constructor(private peliculasService: PeliculasService,
     private salasService: SalasService,
-    private funcionesService: FuncionesService) { }
+    private funcionesService: FuncionesService,
+    private cookieService: CookieService) { }
 
   ngOnInit() {
     this.actualizarfuncion();
+    this.rolId = parseInt(this.cookieService.getCookie('rol') || '0', 10);
     this.salasService.indexsala().subscribe(salas => {
       this.salas = salas;
    });

@@ -21,6 +21,7 @@ export class CombosEditComponent {
   cargando: boolean = true;
   productos: Producto[] = [];
   productosSeleccionados: Producto[] = [];
+  isLoading = false;
 
  constructor(
     private formBuilder: FormBuilder,
@@ -81,6 +82,7 @@ export class CombosEditComponent {
 
  onSubmit(): void {
   if (this.combosEditForm.valid) {
+    this.isLoading = true;
     const formValue = this.combosEditForm.value;
     const data = {
       ...formValue,

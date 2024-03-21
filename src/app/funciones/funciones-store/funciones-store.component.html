@@ -59,7 +59,10 @@
                        <div *ngIf="funcionesStoreForm.get('hora_inicio')?.errors?.['required']">La hora de inicio es requerida.</div>
                     </div>
                    </div>
-                 <button type="submit" class="btn btn-primary">Crear funcion</button>
+                   <button type="submit" [disabled]="isLoading" class="btn btn-primary" (click)="onSubmit()">
+                     <span *ngIf="!isLoading">Guardar</span>
+                     <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
                </form>
            </div>
          </div>

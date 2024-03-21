@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from './auth.service'; 
 import { CookieService } from './cookies.service';
 import { LoginService } from './login/login.service';
 import {RouterLink, RouterLinkActive, RouterOutlet, Router} from "@angular/router";
+import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
  selector: 'app-root',
@@ -14,35 +15,44 @@ import {RouterLink, RouterLinkActive, RouterOutlet, Router} from "@angular/route
 })
 export class AppComponent implements OnInit {
  title = 'Cines';
- userId: number | null = null;
+ rolId: number = 0;
  hasAuthToken: boolean = false;
 
- constructor(private authService: AuthService,
+ constructor(
   private cookieService: CookieService,
   private router: Router,
-  private loginService: LoginService) {}
+  private loginService: LoginService,
+  private changeDetectorRef: ChangeDetectorRef) {}
 
- ngOnInit(): void {
-    this.authService.userId$.subscribe(userId => {
-      this.userId = userId;
-    });
-
-    this.hasAuthToken = this.cookieService.getCookie('authToken') !== null;
-
- }
-
- logOut(event: Event) {
-  event.preventDefault(); // Prevenir el comportamiento predeterminado del enlace
-
-  this.loginService.logoutUser().subscribe(
-    (response: any) => {
-      console.log(response.message); // Asumiendo que la respuesta contiene una propiedad 'message'
-      console.log('sesion cerrada');
-      this.router.navigate(['/login']);
-    },
-    error => {
-      console.error('Error al cerrar la sesión:', error);
+  ngOnInit(): void {
+    const authToken = localStorage.getItem('authToken');
+    this.hasAuthToken = !!authToken; // Convierte el valor a booleano
+    if (this.hasAuthToken) {
+      this.rolId = parseInt(this.cookieService.getCookie('rol') || '0', 10);
+    } else {
+      this.rolId = 0;
     }
-  );
-}
+  }
+
+
+  logOut(event: Event) {
+    event.preventDefault();
+    const confirmLogout = confirm('¿Estás seguro de que deseas cerrar la sesión?');
+    if (confirmLogout) {
+      this.loginService.logoutUser().subscribe(
+        (response: any) => {
+          console.log(response.message);
+          localStorage.removeItem('authToken');
+          this.cookieService.deleteFCookie('authToken');
+          this.cookieService.deleteFCookie('rol');
+          this.rolId = 0;
+          this.changeDetectorRef.detectChanges();
+          window.location.reload();
+        },
+        error => {
+          console.error('Error al cerrar la sesión:', error);
+        }
+      );
+    }
+  }
 }

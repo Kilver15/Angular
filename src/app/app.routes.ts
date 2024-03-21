@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { LoginGuard } from './auth/login.guard';
 import { VerificacionGuard } from './auth/verificacion.guard';
+import { RolGuard } from './auth/rol.guard';
+import { Userguard } from './auth/user.guard';
 
 export const routes: Routes = [
     {
@@ -19,7 +21,7 @@ export const routes: Routes = [
       {
         path: 'cines/create',
         loadChildren: () => import('./cines/cines-store/cines-store.module').then(m => m.CinesStoreModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, Userguard]
       },
       {
         path: 'cines/index',
@@ -29,12 +31,12 @@ export const routes: Routes = [
       {
         path: 'cines/edit/:id',
         loadChildren: () => import('./cines/cines-edit/cines-edit.module').then(m => m.CinesEditModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, Userguard]
       },
       {
         path: 'salas/create',
         loadChildren: () => import('./salas/salas-store/salas-store.module').then(m => m.SalasStoreModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, RolGuard]
       },
       {
         path: 'salas/index',
@@ -44,12 +46,12 @@ export const routes: Routes = [
       {
         path: 'salas/edit/:id',
         loadChildren: () => import('./salas/salas-edit/salas-edit.module').then(m => m.SalasEditModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, RolGuard]
       },
       {
         path: 'combos/create',
         loadChildren: () => import('./combos/combos-store/combos-store.module').then(m => m.CombosStoreModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, RolGuard]
       },
       {
         path: 'combos/index',
@@ -59,12 +61,12 @@ export const routes: Routes = [
       {
         path: 'combos/edit/:id',
         loadChildren: () => import('./combos/combos-edit/combos-edit.module').then(m => m.CombosEditModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, RolGuard]
       },
       {
         path: 'generos/create',
         loadChildren: () => import('./generos/generos-store/generos-store.module').then(m => m.GenerosStoreModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, Userguard]
       },
       {
         path: 'generos/index',
@@ -74,12 +76,12 @@ export const routes: Routes = [
       {
         path: 'generos/edit/:id',
         loadChildren: () => import('./generos/generos-edit/generos-edit.module').then(m => m.GenerosEditModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, Userguard]
       },
       {
         path: 'productos/create',
         loadChildren: () => import('./productos/productos-store/productos-store.module').then(m => m.ProductosStoreModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, RolGuard]
       },
       {
         path: 'productos/index',
@@ -89,12 +91,12 @@ export const routes: Routes = [
       {
         path: 'productos/edit/:id',
         loadChildren: () => import('./productos/productos-edit/productos-edit.module').then(m => m.ProductosEditModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, RolGuard]
       },
       {
         path: 'funciones/create',
         loadChildren: () => import('./funciones/funciones-store/funciones-store.module').then(m => m.FuncionesStoreModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, RolGuard]
       },
       {
         path: 'funciones/index',
@@ -104,12 +106,12 @@ export const routes: Routes = [
       {
         path: 'funciones/edit/:id',
         loadChildren: () => import('./funciones/funciones-edit/funciones-edit.module').then(m => m.FuncionesEditModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, RolGuard]
       },
       {
         path: 'peliculas/create',
         loadChildren: () => import('./peliculas/peliculas-store/peliculas-store.module').then(m => m.PeliculasStoreModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, RolGuard]
       },
       {
         path: 'peliculas/index',
@@ -119,12 +121,12 @@ export const routes: Routes = [
       {
         path: 'peliculas/edit/:id',
         loadChildren: () => import('./peliculas/peliculas-edit/peliculas-edit.module').then(m => m.PeliculasEditModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, RolGuard]
       },
       {
         path: 'boletos/create',
         loadChildren: () => import('./boletos/boletos-store/boletos-store.module').then(m => m.BoletosStoreModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, RolGuard]
       },
       {
         path: 'boletos/index',
@@ -134,22 +136,22 @@ export const routes: Routes = [
       {
         path: 'boletos/edit/:id',
         loadChildren: () => import('./boletos/boletos-edit/boletos-edit.module').then(m => m.BoletosEditModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, RolGuard]
       },
       {
         path: 'users/index',
         loadChildren: () => import('./users/users-index/users-index.module').then(m => m.UsersIndexModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, RolGuard]
       },
       {
         path: 'users/edit/:id',
         loadChildren: () => import('./users/users-edit/users-edit.module').then(m => m.UsersEditModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, RolGuard]
       },
       {
         path: 'logs',
         loadChildren: () => import('./logs/logs-index/logs-index.module').then(m => m.LogsIndexModule),
-        canActivate: [LoginGuard]
+        canActivate: [LoginGuard, RolGuard]
       },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];

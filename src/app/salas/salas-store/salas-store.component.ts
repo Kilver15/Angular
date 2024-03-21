@@ -20,7 +20,7 @@ import { Cine } from '../../interfaces/cine.interface';
 export class SalasStoreComponent {
   salasStoreForm!: FormGroup;
   cines: Cine[] = [];
-
+  isLoading = false;
   constructor(private formBuilder: FormBuilder,
     private salasService: SalasService,
     private cinesService: CinesService,
@@ -37,10 +37,9 @@ export class SalasStoreComponent {
    });
   }
   
-  
-
   onSubmit(): void {
     if (this.salasStoreForm.valid) {
+      this.isLoading = true;
       console.log(this.salasStoreForm.value);
       this.salasService.createSala(this.salasStoreForm.value).subscribe(
         response => {
