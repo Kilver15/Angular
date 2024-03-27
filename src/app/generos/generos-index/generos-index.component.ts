@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { fadeInOutAnimations } from '../../animations';
 import { RouterLink } from '@angular/router';
 import { CookieService } from '../../cookies.service';
+import { PusherserviceService } from '../../pusherservice.service';
 
 @Component({
   selector: 'app-generos-index',
@@ -20,11 +21,14 @@ export class GenerosIndexComponent {
   rolId: number = 0;
 
   constructor(private generosService: GenerosService,
-    private cookieService: CookieService) { }
+    private cookieService: CookieService, private pusherService: PusherserviceService) { }
 
   ngOnInit() {
     this.actualizargenero();
     this.rolId = parseInt(this.cookieService.getCookie('rol') || '0', 10);
+    this.pusherService.subscribeToGeneroUpdatedEvent((data) => {
+      this.actualizargenero();
+    });
   }
   actualizargenero() {
     this.generosService.indexgenero().subscribe(
