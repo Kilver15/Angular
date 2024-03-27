@@ -6,7 +6,7 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { VerificacionService } from './verificacion.service';
-import { CookieService } from '../cookies.service';
+import { CookieService } from 'ngx-cookie-service';
 import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
@@ -52,8 +52,8 @@ export class VerificacionComponent implements OnInit {
         data => {
           console.log('Código verificado exitosamente', data);
           localStorage.setItem('authToken', data.token);
-          this.cookieService.setCookie('authToken', data.token, 1);
-          this.cookieService.setCookie('rol', String(data.rol_id), 1);
+          this.cookieService.set('authToken', data.token);
+          this.cookieService.set('rol', String(data.rol_id));
           this.changeDetectorRef.detectChanges(); // Detectar cambios
           window.location.reload();
         },

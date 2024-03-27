@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CookieService } from '../cookies.service';
+import { CookieService } from 'ngx-cookie-service';
 import { tap } from 'rxjs/operators';
 import { AuthInterceptor } from '../auth.interceptor';
 
@@ -18,7 +18,7 @@ export class VerificacionService {
 
   constructor(private http: HttpClient, private cookieService: CookieService) { }
 
-  token = this.cookieService.getCookie('sanctToken');
+  token = this.cookieService.get('sanctToken');
 
  verifyCode(code: number): Observable<VerificationResponse> {
   const headers = new HttpHeaders()
@@ -29,7 +29,7 @@ export class VerificacionService {
   
     return this.http.post<VerificationResponse>(this.apiUrl, {code}, options).pipe(
       tap(response => {
-        this.cookieService.deleteCookie('sanctToken', '/', 'localhost', true, 'Lax');
+        this.cookieService.delete('sanctToken');
           
       })
     );;

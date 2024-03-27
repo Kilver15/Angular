@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CookieService } from './cookies.service';
+import { CookieService } from 'ngx-cookie-service';
 import { LoginService } from './login/login.service';
 import {RouterLink, RouterLinkActive, RouterOutlet, Router} from "@angular/router";
 import { ChangeDetectorRef } from '@angular/core';
@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
     const authToken = localStorage.getItem('authToken');
     this.hasAuthToken = !!authToken; // Convierte el valor a booleano
     if (this.hasAuthToken) {
-      this.rolId = parseInt(this.cookieService.getCookie('rol') || '0', 10);
+      this.rolId = parseInt(this.cookieService.get('rol') || '0', 10);
     } else {
       this.rolId = 0;
     }
@@ -43,8 +43,8 @@ export class AppComponent implements OnInit {
         (response: any) => {
           console.log(response.message);
           localStorage.removeItem('authToken');
-          this.cookieService.deleteFCookie('authToken');
-          this.cookieService.deleteFCookie('rol');
+          this.cookieService.delete('authToken');
+          this.cookieService.delete('rol');
           this.rolId = 0;
           this.changeDetectorRef.detectChanges();
           window.location.reload();

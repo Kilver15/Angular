@@ -6,7 +6,7 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { LoginService } from './login.service';
-import { CookieService } from '../cookies.service';
+import { CookieService } from 'ngx-cookie-service';
 import { User } from '../interfaces/user.interface';
 
 @Component({
@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
           console.log(response);
         if (response.token) {
           let cookietoken = response.token;
-          this.cookieService.setCookie('sanctToken', cookietoken, 1);
+          this.cookieService.set('sanctToken', cookietoken);
           this.router.navigate(['/verificacion']);
         } else {
           alert('Por favor, primero activa tu cuenta desde tu correo electronico.');

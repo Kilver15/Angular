@@ -30,8 +30,6 @@ export class ProductosIndexComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Suscripción al evento SSE 'new_product'
     this.sseSubscription = this.sseClient.stream('/api/sse').subscribe((event: any) => {
-      console.log('Evento recibido:', event);
-      // Actualizar la tabla de productos
       this.actualizarproducto();
     });
     this.rolId = parseInt(this.cookieService.getCookie('rol') || '0', 10);
