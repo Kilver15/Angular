@@ -1,0 +1,13 @@
+<div class="game-container" *ngIf="gamestarted === 1" (click)="onClick($event)">
+    <div class="ship" [style.left.px]="shipX" [style.top.px]="shipY"> </div>
+    <div *ngIf="bulletFired" class="bullet" [style.left.px]="bulletX" [style.top.px]="bulletY"></div>
+    <div class="score">Score: {{ score }}</div>
+</div>
+
+<div class="loading-container" *ngIf="gamestarted === 0">
+    <div class="spinner"></div>
+    <div class="loading-text">Esperando para iniciar...</div>
+    <div>
+        <button class="btn btn-danger mt-3">Salir</button>
+    </div>
+</div>

@@ -53,7 +53,6 @@ export class VerificacionComponent implements OnInit {
           console.log('Código verificado exitosamente', data);
           localStorage.setItem('authToken', data.token);
           this.cookieService.set('authToken', data.token);
-          this.cookieService.set('rol', String(data.rol_id));
           this.changeDetectorRef.detectChanges(); // Detectar cambios
           window.location.reload();
         },

@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
  title = 'Cines';
  rolId: number = 0;
  hasAuthToken: boolean = false;
+ isPartidaRoute = false;
 
  constructor(
   private cookieService: CookieService,
@@ -24,14 +25,14 @@ export class AppComponent implements OnInit {
   private loginService: LoginService,
   private changeDetectorRef: ChangeDetectorRef) {}
 
+
   ngOnInit(): void {
     const authToken = localStorage.getItem('authToken');
     this.hasAuthToken = !!authToken; // Convierte el valor a booleano
-    if (this.hasAuthToken) {
-      this.rolId = parseInt(this.cookieService.get('rol') || '0', 10);
-    } else {
-      this.rolId = 0;
-    }
+    this.router.events.subscribe((event) => {
+      this.isPartidaRoute = this.router.url === '/partida';
+    });
+
   }
 
 

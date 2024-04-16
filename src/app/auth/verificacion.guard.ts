@@ -18,7 +18,7 @@ export class VerificacionGuard implements CanActivate {
     if (!hasSanctToken) {
       // Redirige al usuario a la página de login si no tiene sanctToken
       if (hasAuthToken) {
-        this.router.navigate(['/cines/index']);
+        this.router.navigate(['/']);
       }
       return this.router.createUrlTree(['/login']);
     }
