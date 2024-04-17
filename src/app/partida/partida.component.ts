@@ -25,7 +25,7 @@ export class PartidaComponent {
   bulletY: number = 0; // Posición Y del disparo
   bulletSpeed: number = 10; // Velocidad del disparo
   bulletFired: boolean = false; // Indica si el disparo está en el aire
-  gamestarted: number = 0;
+  gamestarted: number = 1;
   constructor(private router: Router) { }
 
   ngOnInit() {

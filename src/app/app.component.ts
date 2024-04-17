@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CookieService } from 'ngx-cookie-service';
+import { CookieService } from './cookies.service';
 import { LoginService } from './login/login.service';
 import {RouterLink, RouterLinkActive, RouterOutlet, Router} from "@angular/router";
 import { ChangeDetectorRef } from '@angular/core';
@@ -44,8 +44,8 @@ export class AppComponent implements OnInit {
         (response: any) => {
           console.log(response.message);
           localStorage.removeItem('authToken');
-          this.cookieService.delete('authToken');
-          this.cookieService.delete('rol');
+          this.cookieService.deleteFCookie('authToken');
+          this.cookieService.deleteFCookie('rol');
           this.rolId = 0;
           this.changeDetectorRef.detectChanges();
           window.location.reload();

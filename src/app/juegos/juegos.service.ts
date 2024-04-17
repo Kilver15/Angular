@@ -6,7 +6,7 @@ import { Juego } from '../interfaces/juego.interface';
 @Injectable({
  providedIn: 'root'
 })
-export class CinesService {
+export class JuegosService {
  private apiUrl = 'http://localhost:8000/api/juegos';
 
  constructor(private http: HttpClient) { }

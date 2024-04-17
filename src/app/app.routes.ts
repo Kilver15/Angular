@@ -26,5 +26,10 @@ export const routes: Routes = [
         loadChildren: () => import('./partida/partida.module').then(m => m.PartidaModule),
         canActivate: [LoginGuard]
       },
+      {
+        path: 'estadisticas',
+        loadChildren: () => import('./estadisticas/estadisticas.module').then(m => m.EstadisticasModule),
+        canActivate: [LoginGuard]
+      },
     { path: '', redirectTo: '/', pathMatch: 'full' },
 ];
