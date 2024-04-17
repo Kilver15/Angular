@@ -20,4 +20,9 @@ export class PusherserviceService {
     const channel = this.pusher.subscribe('genero-channel');
     channel.bind('GeneroActualizado', callback);
   }
+
+  subscribeToJoinGame(callback: (data: any) => void): void {
+    const channel = this.pusher.subscribe('genero-channel');
+    channel.bind('Partidainicio', callback);
+  }
 }

@@ -4,5 +4,5 @@ export interface Juego {
     jugador2?: number;
     puntuacion1?: number;
     puntuacion2?: number;
-    estado: string;
+    estado?: string;
 }

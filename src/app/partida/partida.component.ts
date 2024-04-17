@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import {  Component } from '@angular/core';
 import { fadeInOutAnimations } from '../animations';
 import { Router } from '@angular/router';
-
+import { Juego } from '../interfaces/juego.interface';
+import { JuegosService } from '../juegos/juegos.service';
+import { PusherserviceService } from '../pusherservice.service';
 @Component({
   selector: 'app-partida',
   standalone: true,
@@ -25,12 +27,20 @@ export class PartidaComponent {
   bulletY: number = 0; // Posición Y del disparo
   bulletSpeed: number = 10; // Velocidad del disparo
   bulletFired: boolean = false; // Indica si el disparo está en el aire
-  gamestarted: number = 1;
-  constructor(private router: Router) { }
+  gamestarted: number = 0;
+  player1: number = 1
+  constructor(private router: Router,private juegosService: JuegosService,
+    private pusherService: PusherserviceService,
+  ) { }
 
   ngOnInit() {
+    this.pusherService.subscribeToJoinGame(data => {
+      this.gamestarted = 1;
+    });
     // Iniciar el movimiento del barco
     this.moveShip();
+
+
   }
 
   moveShip() {
