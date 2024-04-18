@@ -20,7 +20,7 @@
                         <td>{{juego.id}}</td>
                         <td>{{getUserNombre(juego.jugador1)}}</td>
                         <td>
-                            <button (click)="unirsePartida()" class="btn btn-primary btn-spacing">Unirse</button>
+                            <button (click)="unirsePartida(juego.id!)" class="btn btn-primary btn-spacing">Unirse</button>
                         </td>
                     </tr>
                 </tbody>

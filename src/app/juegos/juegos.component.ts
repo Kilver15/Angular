@@ -25,6 +25,7 @@ export class JuegosComponent implements OnInit {
   isLoading = true;
 
   currentId: number = 0;
+  partidaId: number = 0;
   constructor(private usersService: UsersService, 
     private router: Router, 
     private juegosService: JuegosService,
@@ -65,12 +66,14 @@ export class JuegosComponent implements OnInit {
       estado: '',
     };
     console.log('Creando partida...', data);
-    this.juegosService.createJuego(data).subscribe(juego => {
-      console.log('Partida creada:', juego);
-      this.router.navigate(['/partida']);
-    });}
+    this.juegosService.createJuego(data).subscribe((response: Juego) => {
+      const juegoId = response.id;
+      console.log('ID de la partida creada:', juegoId);
+      this.router.navigate(['/partida', juegoId]);
+  });
+}
   
-  unirsePartida() {
+  unirsePartida(juego: number) {
     let data: Juego = {
       jugador1: 0,
       jugador2: this.currentId,
@@ -78,10 +81,11 @@ export class JuegosComponent implements OnInit {
       puntuacion2: 0,
       estado: '',
     };
-    console.log('Uniendose a partida...', data);
-    this.juegosService.unirsePartida(data).subscribe(juego => {
-      console.log('Ingreso a partida:', juego);
-      this.router.navigate(['/partida']);
+    this.juegosService.unirsePartida(data,juego).subscribe((response: Juego) => {
+      const juegoId = response.id;
+      console.log('Uniendose a partida...', data);
+      console.log('Ingreso a partida:', juegoId);
+      this.router.navigate(['/partida', juegoId]);
     });
   }
 

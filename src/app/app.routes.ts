@@ -22,7 +22,7 @@ export const routes: Routes = [
         canActivate: [LoginGuard]
       },
       {
-        path: 'partida',
+        path: 'partida/:id',
         loadChildren: () => import('./partida/partida.module').then(m => m.PartidaModule),
         canActivate: [LoginGuard]
       },

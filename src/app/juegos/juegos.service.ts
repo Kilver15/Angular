@@ -19,7 +19,11 @@ export class JuegosService {
     return this.http.post<Juego>(this.apiUrl, juego);
  }
 
- unirsePartida(juego: Juego): Observable<Juego> {
-    return this.http.put<Juego>(this.apiUrl, juego);
+unirsePartida(juego: Juego, id: number): Observable<Juego> {
+   return this.http.put<Juego>(`${this.apiUrl}/${id}`, juego);
+}
+
+ buscarJuego(id: number): Observable<Juego> {
+    return this.http.get<Juego>(`${this.apiUrl}/${id}`);
  }
 }

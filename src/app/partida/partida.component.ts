@@ -3,7 +3,10 @@ import { CommonModule } from '@angular/common';
 import { fadeInOutAnimations } from '../animations';
 import { RouterLink } from '@angular/router';
 import { CookieService } from '../cookies.service';
-
+import { PusherserviceService } from '../pusherservice.service';
+import { Juego } from '../interfaces/juego.interface';
+import { JuegosService } from '../juegos/juegos.service';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-funciones-index',
   standalone: true,
@@ -14,15 +17,22 @@ import { CookieService } from '../cookies.service';
 })
 export class PartidaComponent implements OnInit {
   gameid:number  = 0;
-  player1:number =0;
-  player2:number = 0;
-  score: number = 0;
+  juegoActual: Juego = {
+    id: this.gameid,
+    jugador1: 0,
+    jugador2: 0,
+    puntuacion1: 0,
+    puntuacion2: 0,
+    estado: ''
+  };
+  readyJugador2: boolean = false; // Indica si el juego está listo para comenzar
+  score: number = 0; // Puntuación del jugador
   shipX: number = -60; // Posición X inicial del barco
   shipY: number = 300; // Posición Y inicial del barco
   shipWidth: number = 50; // Ancho del barco
   shipHeight: number = 50; // Alto del barco
   shipSpeed: number = 5; // Velocidad del movimiento del barco
-
+  gamestarted: number = 0;
   bulletX: number = 0; // Posición X del disparo
   bulletY: number = 0; // Posición Y del disparo
   bulletSpeed: number = 20; // Velocidad del disparo
@@ -31,13 +41,33 @@ export class PartidaComponent implements OnInit {
   remainingAmmo: number = 2; // Contador de municiones restantes
   showRestartButton: boolean = false; // Indica si se debe mostrar el botón de reinicio
 
-  constructor() { }
+  constructor(private pusherService: PusherserviceService,
+    private juegoService: JuegosService,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
+    this.gameid = Number(this.route.snapshot.paramMap.get('id'));
+    this.buscarPartida(this.gameid);
+    this.pusherService.subscribeToJoinGame((data) => {
+      this.buscarPartida(this.gameid);
+      console.log('Jugador 2 ingreso:', this.juegoActual.jugador2);
+      this.readyJugador2 = true;
+    });
     // Iniciar el movimiento del barco
     this.moveShip();
   }
-
+  buscarPartida(id: number) {
+    this.juegoService.buscarJuego(id).subscribe((juego: Juego) => {
+      this.juegoActual = juego;
+      console.log('Juego:', this.juegoActual);
+      console.log('Jugador 1:', this.juegoActual.jugador1);
+      console.log('Jugador 2:', this.juegoActual.jugador2);
+      if (this.readyJugador2 || this.juegoActual.jugador2 !== null) {
+        this.gamestarted = 1;
+      }
+    });
+  }
   moveShip() {
     // Mover el barco horizontalmente
     const shipInterval = setInterval(() => {
