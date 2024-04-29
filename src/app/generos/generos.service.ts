@@ -6,7 +6,7 @@ import { Genero } from '../interfaces/genero.interface';
   providedIn: 'root'
 })
 export class GenerosService {
-  private apiUrl = 'http://localhost:8000/api/generos';
+  private apiUrl = 'http://192.168.115.29:8000/api/generos';
  
   constructor(private http: HttpClient) { }
  

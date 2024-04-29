@@ -5,4 +5,5 @@ export interface Juego {
     puntuacion1?: number;
     puntuacion2?: number;
     estado?: string;
+    ganador?: number;
 }

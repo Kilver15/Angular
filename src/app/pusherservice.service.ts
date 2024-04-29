@@ -25,4 +25,22 @@ export class PusherserviceService {
     const channel = this.pusher.subscribe('genero-channel');
     channel.bind('Partidainicio', callback);
   }
+  finPartida(callback: (data: any) => void): void {
+    const channel = this.pusher.subscribe('genero-channel');
+    channel.bind('GeneroActualizado', callback);
+  }
+
+  marcador(callback: (data: any) => void): void {
+    const channel = this.pusher.subscribe('genero-channel');
+    channel.bind('marcador', callback);
+  }
+  
+  onShotReceived(callback: (data: any) => void): void {
+    const channel = this.pusher.subscribe('genero-channel');
+    channel.bind('casilla', callback);
+  }
+
+  unsuscribe(channel: string): void {
+    this.pusher.unsubscribe(channel);
+  }
 }

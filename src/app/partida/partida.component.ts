@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { fadeInOutAnimations } from '../animations';
 import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CookieService } from '../cookies.service';
 import { PusherserviceService } from '../pusherservice.service';
 import { Juego } from '../interfaces/juego.interface';
 import { JuegosService } from '../juegos/juegos.service';
 import { ActivatedRoute } from '@angular/router';
+import { UsersService } from '../users/user.service';
+import { Barco } from '../interfaces/barco.interface';
 @Component({
   selector: 'app-funciones-index',
   standalone: true,
@@ -15,152 +18,175 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './partida.component.html',
   styleUrl: './partida.component.css'
 })
-export class PartidaComponent implements OnInit {
+
+export class PartidaComponent {
+  playerId: number = 0;
+  isPlayer1: boolean = false;
+  isPlayer2: boolean = false;
   gameid:number  = 0;
+  readyJugador2: boolean = false;
+  gamestarted: number = 0;
+  gamefinished: number = 0;
   juegoActual: Juego = {
     id: this.gameid,
     jugador1: 0,
     jugador2: 0,
     puntuacion1: 0,
     puntuacion2: 0,
-    estado: ''
+    estado: '',
+    ganador: 0
   };
-  readyJugador2: boolean = false; // Indica si el juego está listo para comenzar
-  score: number = 0; // Puntuación del jugador
-  shipX: number = -60; // Posición X inicial del barco
-  shipY: number = 300; // Posición Y inicial del barco
-  shipWidth: number = 50; // Ancho del barco
-  shipHeight: number = 50; // Alto del barco
-  shipSpeed: number = 5; // Velocidad del movimiento del barco
-  gamestarted: number = 0;
-  bulletX: number = 0; // Posición X del disparo
-  bulletY: number = 0; // Posición Y del disparo
-  bulletSpeed: number = 20; // Velocidad del disparo
-  bulletFired: boolean = false; // Indica si el disparo está en el aire
+  ganador = false;
+  perdedor = false;
+  turno: boolean = true;
+  totalShips = 15;
+  shipCoordinates: Barco[] = [];
+  columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+  rows = [0, 1, 2, 3, 4];
+  myBoard = Array.from({ length: 5 }, () => Array.from({ length: 8 }, () => false));
+  hit = Array.from({ length: 5 }, () => Array.from({ length: 8 }, () => false));
+  noHit = Array.from({ length: 5 }, () => Array.from({ length: 8 }, () => false));
+  opponentBoard = Array.from({ length: 5 }, () => Array.from({ length: 8 }, () => false));
 
-  remainingAmmo: number = 2; // Contador de municiones restantes
-  showRestartButton: boolean = false; // Indica si se debe mostrar el botón de reinicio
-
-  constructor(private pusherService: PusherserviceService,
-    private juegoService: JuegosService,
-    private route: ActivatedRoute
+  constructor(private juegoService: JuegosService,
+    private pusherService: PusherserviceService,
+    private route: ActivatedRoute,
+    private userService: UsersService,
+    private router : Router,
   ) { }
 
   ngOnInit() {
-    this.gameid = Number(this.route.snapshot.paramMap.get('id'));
-    this.buscarPartida(this.gameid);
-    this.pusherService.subscribeToJoinGame((data) => {
+    this.generateShips();
+      this.gameid = Number(this.route.snapshot.paramMap.get('id'));
       this.buscarPartida(this.gameid);
-      console.log('Jugador 2 ingreso:', this.juegoActual.jugador2);
-      this.readyJugador2 = true;
+  
+      this.pusherService.subscribeToJoinGame((data) => {
+        this.buscarPartida(this.gameid);
+        console.log('Jugador 2 ingreso:', this.juegoActual.jugador2);
+      });
+      this.userService.getCurrentUser().subscribe(userId => {
+        this.juegoService.buscarJuego(this.gameid).subscribe((juego: Juego) => {
+          this.playerId = userId;
+          if (juego.jugador1 === userId) {
+            console.log("Eres el jugador 1");
+            this.isPlayer1 = true;
+            this.turno = false;
+  
+          } else if (juego.jugador2 === userId) {
+            console.log("Eres el jugador 2");
+            this.isPlayer2 = true;
+          } else {
+            console.log("No estás asociado con esta partida");
+          }
+        });
+      });
+
+      this.pusherService.onShotReceived((shot) => {
+        const { casilla } = shot;
+        const { row, column } = casilla;
+        console.log('Evento recibido');
+        console.log('Fila:', row);
+        console.log('Columna:', column);
+        // Actualizar el tablero del oponente
+        if (!this.turno) {
+          this.turno = true;
+          const hitShip = this.shipCoordinates.find(coord => coord.row === row && coord.column === column);
+          if (hitShip) {
+            this.myBoard[row][this.columns.indexOf(column)] = false;
+            this.hit[row][this.columns.indexOf(column)] = true;
+            this.totalShips--;
+            if (this.totalShips === 0) {
+              console.log('Juego terminado');
+              this.perdedor = true;
+              console.log("Partida terminada: ", this.perdedor, this.ganador);
+              if (this.isPlayer1) {
+                this.juegoActual.ganador = this.juegoActual.jugador2!;
+                this.gamefinished = this.juegoActual.jugador2!;
+              } else {
+                this.juegoActual.ganador = this.juegoActual.jugador1;
+                this.gamefinished = this.juegoActual.jugador1!;
+              }
+              this.juegoService.terminarJuego(this.juegoActual,this.gameid).subscribe(
+                response => {
+                  this.perdedor = true;
+                  console.log("Partida terminada: ", response);
+
+                },
+                error => {
+                  console.log(error);
+                }
+              );
+            }
+          } else {
+            this.myBoard[row][this.columns.indexOf(column)] = false;
+            this.noHit[row][this.columns.indexOf(column)] = true;
+          }
+        } else { 
+          this.turno = false;
+        }
     });
-    // Iniciar el movimiento del barco
-    this.moveShip();
+
+    this.pusherService.finPartida((data) => {
+      console.log('Fin de la partida');
+      console.log('Ganador:', this.gamefinished);
+      if (this.gamefinished == 0) {
+        this.ganador = true;
+      }
+      
+    });
   }
+
   buscarPartida(id: number) {
     this.juegoService.buscarJuego(id).subscribe((juego: Juego) => {
       this.juegoActual = juego;
       console.log('Juego:', this.juegoActual);
-      console.log('Jugador 1:', this.juegoActual.jugador1);
-      console.log('Jugador 2:', this.juegoActual.jugador2);
       if (this.readyJugador2 || this.juegoActual.jugador2 !== null) {
         this.gamestarted = 1;
       }
     });
   }
-  moveShip() {
-    // Mover el barco horizontalmente
-    const shipInterval = setInterval(() => {
-      this.shipX += this.shipSpeed;
 
-      // Si el barco llega al final de la pantalla, detener el movimiento y reiniciar su posición
-      if (this.shipX > window.innerWidth) {
-        clearInterval(shipInterval);
-        this.shipX = -60;
-        this.moveShip()
-        this.remainingAmmo = 2
-      }
-    }, 100);
-  }
+  generateShips() {
+    while (this.shipCoordinates.length < this.totalShips) {
+      const randomRow = Math.floor(Math.random() * this.rows.length);
+      const randomColumn = Math.floor(Math.random() * this.columns.length);
 
-  onClick(event: MouseEvent) {
-    if (!this.bulletFired && this.remainingAmmo > 0) {
-      // Obtener la posición del clic
-      const x = event.clientX;
-      const y = event.clientY;
-
-      // Disparar el proyectil desde la parte superior de la pantalla
-      this.bulletX = x;
-      this.bulletY = 0;
-      this.bulletFired = true;
-
-      // Iniciar el movimiento del proyectil
-      this.moveBullet();
-
-      // Reducir la cantidad de municiones restantes
-      this.remainingAmmo--;
-
-      // Si se quedó sin municiones, mostrar el botón de reinicio
-      if (this.remainingAmmo === 0) {
-        this.showRestartButton = true;
+      if (!this.myBoard[randomRow][randomColumn]) {
+        this.myBoard[randomRow][randomColumn] = true;
+        this.shipCoordinates.push({ row: randomRow, column: this.columns[randomColumn] });
       }
     }
+
+    console.log(this.shipCoordinates);
   }
 
-  moveBullet() {
-    // Mover el proyectil verticalmente
-    const bulletInterval = setInterval(() => {
-      this.bulletY += this.bulletSpeed;
-
-      // Verificar si el proyectil golpea al barco
-      if (this.hitShip(this.bulletX, this.bulletY)) {
-        this.score++; // Incrementar el marcador
-        clearInterval(bulletInterval); // Detener el movimiento del proyectil
-        this.bulletFired = false; // Reiniciar el estado del disparo
-
-        // Volver a aparecer el barco al inicio
-        this.shipX = 0;
-        // Reiniciar el contador de balas
-        this.remainingAmmo = 2;
-
-        // Si se quedó sin municiones, mostrar el botón de reinicio
-        if (this.remainingAmmo === 0) {
-          this.showRestartButton = true;
-        }
+  makeMove(row: number, column: string) {
+    if (!this.turno) {
+      return;
+    }
+    row = Number(row);
+    const move = { row, column };
+    this.opponentBoard[row][this.columns.indexOf(column)] = true;
+    this.juegoService.sendCasilla(move).subscribe(
+      response => {
+        console.log("Disparo a " + move.row + move.column + " del enemigo"); 
+        console.log(response);
+      },
+      error => {
+        console.log(error);
       }
-
-      // Si el proyectil llega al final de la pantalla, detener su movimiento
-      if (this.bulletY > window.innerHeight) {
-        clearInterval(bulletInterval);
-        this.bulletFired = false;
+    );
+  }
+  
+  salir() {
+    this.juegoService.cancelarJuego(this.juegoActual,this.gameid).subscribe(
+      response => {
+        console.log("Partida terminada: ", response);
+        this.router.navigate(['/juegos']);
+      },
+      (error: any) => { // Explicitly specify the type of 'error' parameter as 'any'
+        console.log(error);
       }
-    }, 100);
-  }
-
-  hitShip(bulletX: number, bulletY: number): boolean {
-    // Verificar si las coordenadas del proyectil están dentro del área del barco
-    const withinX = bulletX >= this.shipX && bulletX <= this.shipX + this.shipWidth;
-    const withinY = bulletY >= this.shipY && bulletY <= this.shipY + this.shipHeight;
-
-    return withinX && withinY;
-  }
-
-  // Método para reiniciar el juego
-  restartGame() {
-    // Reiniciar el contador de balas
-    this.remainingAmmo = 2;
-    
-    // Reiniciar la posición del barco y la munición
-    this.shipX = 0;
-    this.remainingAmmo = 2;
-    this.showRestartButton = false; // Ocultar el botón de reinicio
-  }
-
-  // Método para manejar el clic en el botón de reinicio
-  onRestartClick() {
-    // Reiniciar el juego
-    this.restartGame();
-    // Mover el barco nuevamente
-    this.moveShip();
+    );
   }
 }

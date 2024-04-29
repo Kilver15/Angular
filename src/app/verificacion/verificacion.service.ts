@@ -14,7 +14,7 @@ interface VerificationResponse {
   providedIn: 'root'
 })
 export class VerificacionService {
-  private apiUrl = 'http://localhost:8000/api/auth/verify-code';
+  private apiUrl = 'http://192.168.115.29:8000/api/auth/verify-code';
 
   constructor(private http: HttpClient, private cookieService: CookieService) { }
 
